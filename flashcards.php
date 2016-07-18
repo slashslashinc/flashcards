@@ -452,7 +452,7 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
 <script>
     $(document).ready(function () {
         $('.flip-button').on('click', function () {
-            $('.card').toggleClass('flipped d');
+            $('.card').toggleClass('flipped');
         });
 
         $('.button.one').on('click', function () {
