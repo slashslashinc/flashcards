@@ -18,7 +18,7 @@ class Card
         $this->b = $b;
         $this->graphic = $graphic;
         $this->audio = $audio;
-        $this->score = 0;
+        $this->score = rand(1, 5);
     }
 }
 
@@ -95,17 +95,26 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <style>
         <?php
-            $width = 768;
-            $height = 510;
-            $padding = 15;
-
             $flashcards_bg = "img/backgrounds/main_background.png";
             $flashcards_font = "fonts/ebrimabd.ttf";
+            $card_bg = "img/entities/card.png";
         ?>
 
         @font-face {
             font-family: FlashcardsFont;
             src: url(<?php echo(base_url() . $flashcards_font); ?>);
+        }
+
+        @-webkit-keyframes fadeinout {
+            50% {
+                opacity: 1;
+            }
+        }
+
+        @keyframes fadeinout {
+            50% {
+                opacity: 1;
+            }
         }
 
         .flashcards,
@@ -120,10 +129,10 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
         }
 
         .flashcards-container {
-            width: <?php echo($width); ?>px;
-            height: <?php echo($height); ?>px;
+            width: 768px;
+            height: 510px;
             margin: 0;
-            padding: <?php echo($padding); ?>px;
+            padding: 15px;
             background: url("<?php echo(base_url() . $flashcards_bg);?>") no-repeat top center;
             background-size: 100%;
             filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $flashcards_bg);?>', sizingMethod='scale');
@@ -135,6 +144,94 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
             width: 100%;
             height: 100%;
             float: left;
+        }
+
+        .card,
+        .card > .side-a,
+        .card > .side-b {
+            position: absolute;
+            width: 236px;
+            height: 327px;
+        }
+
+        .card {
+            top: 88px;
+            left: 276px;
+            -webkit-transform-style: preserve-3d;
+            transition: all 0.3s;
+            -webkit-transition: all 0.3s;
+        }
+
+        .card > .side-a,
+        .card > .side-b {
+            padding: 62px 32px;
+            text-align: center;
+            -webkit-backface-visibility: hidden;
+            background: url("<?php echo(base_url() . $card_bg);?>") no-repeat top center;
+            background-size: 100%;
+            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $card_bg);?>', sizingMethod='scale');
+            -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $card_bg);?>', sizingMethod='scale')";
+            color: #ffffff;
+        }
+
+        .card > .side-b {
+            transform: rotateY(180deg);
+            -webkit-transform: rotateY(180deg);
+        }
+
+        .card.flipped {
+            transform: rotateY(-180deg);
+            -webkit-transform: rotateY(-180deg);
+        }
+
+        .retest-stack-deck {
+            position: absolute;
+            top: 197px;
+            left: 71px;
+            width: 140px;
+            height: 160px;
+            background: transparent;
+        }
+
+        .retest-stack-deck > .highlight-anim {
+            position: relative;
+            width: 99px;
+            height: 100px;
+            top: 23px;
+            left: 21px;
+            background: transparent;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .retest-stack-deck > .highlight-anim.animated {
+            -webkit-animation: fadeinout 2s linear forwards;
+            animation: fadeinout 2s linear forwards;
+        }
+
+        .entire-stack-deck {
+            position: absolute;
+            top: 197px;
+            left: 568px;
+            width: 140px;
+            height: 160px;
+            background: transparent;
+        }
+
+        .entire-stack-deck > .highlight-anim {
+            position: relative;
+            width: 99px;
+            height: 109px;
+            top: 25px;
+            left: 21px;
+            background: transparent;
+            border-radius: 50%;
+            opacity: 0;
+        }
+
+        .entire-stack-deck > .highlight-anim.animated {
+            -webkit-animation: fadeinout 2s linear forwards;
+            animation: fadeinout 2s linear forwards;
         }
 
         .retest-stack-button:hover,
@@ -316,12 +413,26 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
     <div class="flashcards-container">
         <div class="flashcards-main">
             <div class="retest-stack-deck">
-                <div class="hover-anim"></div>
+                <div class="highlight-anim"></div>
             </div>
             <div class="retest-stack-button">
                 <div class="hover-anim"></div>
             </div>
+            <div class="card">
+                <div class="side-a">
+                    This is a test question?
+                </div>
+                <div class="side-b">
+                    Yes, and here is the test answer.
+                </div>
+            </div>
+            <div class="entire-stack-deck">
+                <div class="highlight-anim"></div>
+            </div>
             <div class="entire-stack-button">
+                <div class="hover-anim"></div>
+            </div>
+            <div class="flip-button">
                 <div class="hover-anim"></div>
             </div>
             <div class="score-buttons">
@@ -331,9 +442,6 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
                 <div class="button four"></div>
                 <div class="button five"></div>
             </div>
-            <div class="flip-button">
-                <div class="hover-anim"></div>
-            </div>
             <div class="finished-button">
                 <div class="hover-anim"></div>
             </div>
@@ -341,4 +449,42 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
     </div>
 </div>
 </body>
+<script>
+    $(document).ready(function () {
+        $('.flip-button').on('click', function () {
+            $('.card').toggleClass('flipped d');
+        });
+
+        $('.button.one').on('click', function () {
+            scoreAnimation('.retest-stack-deck', 'rgb(254, 0, 0)');
+        });
+
+        $('.button.two').on('click', function () {
+            scoreAnimation('.retest-stack-deck', 'rgb(242, 159, 0)');
+        });
+
+        $('.button.three').on('click', function () {
+            scoreAnimation('.retest-stack-deck', 'rgb(254, 242, 0)');
+        });
+
+        $('.button.four').on('click', function () {
+            scoreAnimation('.entire-stack-deck', 'rgb(0, 189, 123)');
+        });
+
+        $('.button.five').on('click', function () {
+            scoreAnimation('.entire-stack-deck', 'rgb(0, 0, 254)');
+        });
+    });
+
+    function scoreAnimation(deck, color) {
+        $('.card').fadeOut();
+        $(deck + ' > .highlight-anim')
+            .css('box-shadow', '0 0 30px ' + color)
+            .toggleClass('animated');
+        setTimeout(function () {
+            $(deck + ' > .highlight-anim').toggleClass('animated');
+            $('.card').fadeIn();
+        }, 2000);
+    }
+</script>
 </html>
