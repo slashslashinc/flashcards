@@ -98,24 +98,20 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
             $width = 768;
             $height = 510;
             $padding = 15;
+
             $flashcards_bg = "img/backgrounds/main_background.png";
-
-            $clipboard_width = 264;
-            $clipboard_height = 375;
-            $clipboard_bg = "img/clipboard.png";
-
-            $retake_width = 215;
-            $retake_height = 268;
-            $retake_bg = "img/retake.png";
-
-            $stack_width = 246;
-            $stack_height = 202;
-            $stack_bg = "img/stack.png";
+            $flashcards_font = "fonts/ebrimabd.ttf";
         ?>
+
+        @font-face {
+            font-family: FlashcardsFont;
+            src: url(<?php echo(base_url() . $flashcards_font); ?>);
+        }
 
         .flashcards,
         .flashcards * {
             box-sizing: border-box;
+            font-family: FlashcardsFont, "Helvetica Neue", Helvetica, Arial, sans-serif;
         }
 
         .flashcards {
@@ -141,46 +137,177 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
             float: left;
         }
 
-        .flashcards-clipboard {
-            position: absolute;
-            top: <?php echo(($height/2) - ($clipboard_height/2) - $padding); ?>px;
-            left: <?php echo(($width/2) - ($clipboard_width/2) + $padding); ?>px;
-            width: <?php echo($clipboard_width); ?>px;
-            height: <?php echo($clipboard_height); ?>px;
-            margin: 0;
-            padding: 0;
-            background: url("<?php echo(base_url() . $clipboard_bg); ?>") no-repeat top center;
-            background-size: 100%;
-            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $clipboard_bg); ?>', sizingMethod='scale');
-            -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $clipboard_bg); ?>', sizingMethod='scale')";
+        .retest-stack-button:hover,
+        .entire-stack-button:hover,
+        .finished-button:hover,
+        .flip-button:hover,
+        .score-buttons:hover {
+            cursor: pointer;
         }
 
-        .flashcards-retake {
-            position: absolute;
-            top: <?php echo(($height/2) - ($retake_height/2) + ($padding * 2)); ?>px;
-            left: 45px;
-            width: <?php echo($retake_width); ?>px;
-            height: <?php echo($retake_height); ?>px;
-            margin: 0;
-            padding: 0;
-            background: url("<?php echo(base_url() . $retake_bg); ?>") no-repeat top center;
-            background-size: 100%;
-            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $retake_bg); ?>', sizingMethod='scale');
-            -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $retake_bg); ?>', sizingMethod='scale')";
+        .retest-stack-button:hover > .hover-anim,
+        .entire-stack-button:hover > .hover-anim,
+        .flip-button:hover > .hover-anim,
+        .finished-button:hover > .hover-anim {
+            background-color: rgba(0, 0, 0, 0.3);
         }
 
-        .flashcards-stack {
+        .retest-stack-button {
             position: absolute;
-            top: <?php echo(($height/2) - ($stack_height/2)); ?>px;
-            right: 65px;
-            width: <?php echo($stack_width); ?>px;
-            height: <?php echo($stack_height); ?>px;
-            margin: 0;
-            padding: 0;
-            background: url("<?php echo(base_url() . $stack_bg); ?>") no-repeat top center;
-            background-size: 100%;
-            filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $stack_bg); ?>', sizingMethod='scale');
-            -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $stack_bg); ?>', sizingMethod='scale')";
+            top: 384px;
+            left: 79px;
+            width: 125px;
+            height: 33px;
+            background: transparent;
+        }
+
+        .retest-stack-button > .hover-anim {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 11px;
+        }
+
+        .entire-stack-button {
+            position: absolute;
+            top: 384px;
+            left: 578px;
+            width: 125px;
+            height: 33px;
+            background: transparent;
+        }
+
+        .entire-stack-button > .hover-anim {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border-top-right-radius: 12px;
+            border-bottom-right-radius: 11px;
+        }
+
+        .flip-button {
+            position: absolute;
+            top: 359px;
+            left: 519px;
+            width: 42px;
+            height: 41px;
+            background: transparent;
+        }
+
+        .flip-button > .hover-anim {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            border-radius: 50%;
+            background: transparent;
+        }
+
+        .finished-button {
+            position: absolute;
+            top: 463px;
+            left: 654px;
+            width: 96px;
+            height: 25px;
+            background: transparent;
+        }
+
+        .finished-button > .hover-anim {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border-top-right-radius: 7px;
+            border-bottom-right-radius: 7px;
+        }
+
+        .score-buttons {
+            position: relative;
+            top: 428px;
+            left: 213px;
+            width: 312px;
+            height: 28px;
+            background-color: transparent;
+        }
+
+        .score-buttons .button {
+            position: relative;
+            display: inline-block;
+            width: 71px;
+            height: 25px;
+            border-top-right-radius: 7px;
+            border-bottom-right-radius: 7px;
+        }
+
+        .score-buttons .button:hover {
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .score-buttons .button.two {
+            left: -14px;
+        }
+
+        .score-buttons .button.two:hover:before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgb(254, 0, 0);
+            border-right: rgba(0, 0, 0, 0.3);
+            border-radius: 0 45px 45px 0;
+        }
+
+        .score-buttons .button.three {
+            left: -31px;
+        }
+
+        .score-buttons .button.three:hover:before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgb(242, 159, 0);
+            border-right: rgba(0, 0, 0, 0.3);
+            border-radius: 0 45px 45px 0;
+        }
+
+        .score-buttons .button.four {
+            left: -45px;
+        }
+
+        .score-buttons .button.four:hover:before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgb(254, 242, 0);
+            border-right: rgba(0, 0, 0, 0.3);
+            border-radius: 0 45px 45px 0;
+        }
+
+        .score-buttons .button.five {
+            left: 241px;
+            top: -29px;
+        }
+
+        .score-buttons .button.five:hover:before {
+            content: "";
+            position: absolute;
+            width: 10px;
+            height: 100%;
+            top: 0;
+            left: 0;
+            background: rgb(0, 189, 123);
+            border-right: rgba(0, 0, 0, 0.3);
+            border-radius: 0 45px 45px 0;
         }
     </style>
 </head>
@@ -188,9 +315,28 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
 <div class="flashcards">
     <div class="flashcards-container">
         <div class="flashcards-main">
-            <div class="flashcards-clipboard"></div>
-            <div class="flashcards-retake"></div>
-            <div class="flashcards-stack"></div>
+            <div class="retest-stack-deck">
+                <div class="hover-anim"></div>
+            </div>
+            <div class="retest-stack-button">
+                <div class="hover-anim"></div>
+            </div>
+            <div class="entire-stack-button">
+                <div class="hover-anim"></div>
+            </div>
+            <div class="score-buttons">
+                <div class="button one"></div>
+                <div class="button two"></div>
+                <div class="button three"></div>
+                <div class="button four"></div>
+                <div class="button five"></div>
+            </div>
+            <div class="flip-button">
+                <div class="hover-anim"></div>
+            </div>
+            <div class="finished-button">
+                <div class="hover-anim"></div>
+            </div>
         </div>
     </div>
 </div>
