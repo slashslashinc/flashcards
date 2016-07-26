@@ -1,87 +1,127 @@
 <?php
 
-class Flashcards
-{
-    function Flashcards($title, $cards)
-    {
-        $this->title = $title;
-        $this->cards = $cards;
-        $this->scores = calculate_scores($cards);
-    }
-}
-
-class Card
-{
-    function Card($a, $b, $graphic, $audio)
-    {
-        $this->a = $a;
-        $this->b = $b;
-        $this->graphic = $graphic;
-        $this->audio = $audio;
-        $this->score = rand(1, 5);
-    }
-}
-
-function calculate_scores($cards)
-{
-    $cardCount = 0;
-    $unscored = 0;
-    $ones = 0;
-    $twos = 0;
-    $threes = 0;
-    $fours = 0;
-    $fives = 0;
-    $scores = [];
-
-    foreach ($cards as $card) {
-        $cardCount++;
-
-        if ($card->score == 1) {
-            $unscored++;
-        } elseif ($card->score == 1) {
-            $ones++;
-        } elseif ($card->score == 2) {
-            $twos++;
-        } elseif ($card->score == 3) {
-            $threes++;
-        } elseif ($card->score == 4) {
-            $fours++;
-        } elseif ($card->score == 5) {
-            $fives++;
-        }
-    }
-
-    array_push($scores, [0, ($unscored / $cardCount)]);
-    array_push($scores, [1, ($ones / $cardCount)]);
-    array_push($scores, [2, ($twos / $cardCount)]);
-    array_push($scores, [3, ($threes / $cardCount)]);
-    array_push($scores, [4, ($fours / $cardCount)]);
-    array_push($scores, [5, ($fives / $cardCount)]);
-
-    return $scores;
-}
-
-function init_cards()
-{
-    $cards = [];
-
-    for ($i = 1; $i <= 10; $i++) {
-        array_push($cards, new Card(
-            "This is question " . $i . ".",
-            "This is answer " . $i . ".",
-            "string_to_graphic",
-            "string_to_audio"));
-    }
-
-    return $cards;
-}
-
 function base_url()
 {
     return "./";
 }
 
-$flashcards = new Flashcards("Flashcards Demo", init_cards());
+// DEBUG
+$flashcardset = json_encode(
+    '[
+        {
+            "id":"4",
+            "prompt_side":"What country are we in?",
+            "answer_side":"USA",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active"
+        },
+        {
+            "id":"3",
+            "prompt_side":"What year is it?",
+            "answer_side":"2016",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active"
+        },
+        {
+            "id":"1",
+            "prompt_side":"What is my name?",
+            "answer_side":"Mike Jones!",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active"
+        },
+        {
+            "id":"2",
+            "prompt_side":"What time is it?",
+            "answer_side":"11:04am",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active"
+        },
+        {
+            "id":"5",
+            "prompt_side":"Is this a good question?",
+            "answer_side":"No it is not",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active"
+        },
+        {
+            "id":"6",
+            "prompt_side":"Hello?",
+            "answer_side":"Is it me you are looking for?",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active"
+        },
+        {
+            "id":"7",
+            "prompt_side":"What is 1 + 1?",
+            "answer_side":"1 + 1 = 2",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active"
+        },
+        {
+            "id":"8",
+            "prompt_side":"Is this the last question?",
+            "answer_side":"Hopefully",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active"
+        }
+    ]');
+
+$flashcardinfo = json_encode(
+    '{
+        "id":"2",
+        "prompt_side":null,
+        "answer_side":null,
+        "professor_id":"2",
+        "is_deck":"1",
+        "flashcard_deck_id":null,
+        "deck_title":"General Questions",
+        "date_created":null,
+        "date_last_modified":null,
+        "status":"active"
+    }');
+
+$flashcardprof = "Dr. Professorson";
+// /DEBUG
 
 ?>
 
@@ -90,7 +130,7 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
 <head>
     <meta charset="utf-8">
     <link rel="manifest" href="manifest.json">
-    <title>AmPopMusic.com - <?php echo($flashcards->title); ?></title>
+    <title>AmPopMusic.com - [PUT DECK TITLE HERE]</title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <style>
@@ -144,6 +184,17 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
             width: 100%;
             height: 100%;
             float: left;
+        }
+
+        .flashcards-counter {
+            position: absolute;
+            top: 130px;
+            left: 145px;
+            font-size: 22px;
+        }
+
+        .flashcards-counter-text {
+            text-shadow: 1px 1px 3px #575757;
         }
 
         .card,
@@ -234,6 +285,25 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
             animation: fadeinout 2s linear forwards;
         }
 
+        .entire-stack-deck > .deck-name {
+            position: absolute;
+            top: 35px;
+            left: 25px;
+            width: 90px;
+            text-align: center;
+            text-shadow: 1px 1px 3px #575757;
+        }
+
+        .entire-stack-deck > .professor {
+            position: absolute;
+            top: 75px;
+            left: 25px;
+            width: 90px;
+            font-size: 12px;
+            text-align: center;
+            text-shadow: 1px 1px 3px #575757;
+        }
+
         .retest-stack-button:hover,
         .entire-stack-button:hover,
         .finished-button:hover,
@@ -265,6 +335,14 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
             background: transparent;
             border-top-right-radius: 12px;
             border-bottom-right-radius: 11px;
+        }
+
+        .retest-stack-count {
+            position: relative;
+            top: 25px;
+            left: 9px;
+            text-align: center;
+            max-width: 26px;
         }
 
         .entire-stack-button {
@@ -322,7 +400,7 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
 
         .score-buttons {
             position: relative;
-            top: 428px;
+            top: 383px;
             left: 213px;
             width: 312px;
             height: 28px;
@@ -406,28 +484,101 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
             border-right: rgba(0, 0, 0, 0.3);
             border-radius: 0 45px 45px 0;
         }
+
+        .score-buttons .button.disabled {
+            cursor: not-allowed;
+        }
+
+        .score-buttons .button.disabled:hover {
+            background-color: transparent;
+        }
+
+        .score-buttons .button.disabled:hover:before {
+            content: none;
+        }
+
+        .score-bar {
+            position: relative;
+            top: 97px;
+            left: 512px;
+            width: 213px;
+            height: 45px;
+            background: transparent;
+            border-radius: 2px 2px 5px 5px;
+            overflow: hidden;
+        }
+
+        .score-bar > .score {
+            display: inline-block;
+            height: 100%;
+            margin: 0;
+            padding: 0;
+            float: left;
+        }
+
+        .score-bar > .score.zeros {
+            background-color: gray;
+        }
+
+        .score-bar > .score.ones {
+            background-color: rgb(254, 0, 0);
+        }
+
+        .score-bar > .score.twos {
+            background-color: rgb(242, 159, 0);
+        }
+
+        .score-bar > .score.threes {
+            background-color: rgb(254, 242, 0);
+        }
+
+        .score-bar > .score.fours {
+            background-color: rgb(0, 189, 123);
+        }
+
+        .score-bar > .score.fives {
+            background-color: rgb(0, 0, 254);
+        }
     </style>
 </head>
 <body>
 <div class="flashcards">
     <div class="flashcards-container">
         <div class="flashcards-main">
+            <div class="flashcards-counter">
+                <span class="flashcards-counter-text"></span>
+            </div>
             <div class="retest-stack-deck">
                 <div class="highlight-anim"></div>
+                <div class="retest-stack-count"></div>
             </div>
             <div class="retest-stack-button">
                 <div class="hover-anim"></div>
             </div>
             <div class="card">
                 <div class="side-a">
-                    This is a test question?
+                    <span class="side-a-text">
+                        Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.
+                    </span>
                 </div>
                 <div class="side-b">
-                    Yes, and here is the test answer.
+                    <span class="side-b-text">
+                        Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.
+                    </span>
                 </div>
+            </div>
+            <div class="score-bar">
+                <div class="score ones"></div>
+                <div class="score twos"></div>
+                <div class="score threes"></div>
+                <div class="score fours"></div>
+                <div class="score fives"></div>
+                <div class="score zeros"></div>
             </div>
             <div class="entire-stack-deck">
                 <div class="highlight-anim"></div>
+                <span class="deck-name"></span>
+                <span class="professor"></span>
             </div>
             <div class="entire-stack-button">
                 <div class="hover-anim"></div>
@@ -436,11 +587,11 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
                 <div class="hover-anim"></div>
             </div>
             <div class="score-buttons">
-                <div class="button one"></div>
-                <div class="button two"></div>
-                <div class="button three"></div>
-                <div class="button four"></div>
-                <div class="button five"></div>
+                <div class="button one disabled"></div>
+                <div class="button two disabled"></div>
+                <div class="button three disabled"></div>
+                <div class="button four disabled"></div>
+                <div class="button five disabled"></div>
             </div>
             <div class="finished-button">
                 <div class="hover-anim"></div>
@@ -450,41 +601,171 @@ $flashcards = new Flashcards("Flashcards Demo", init_cards());
 </div>
 </body>
 <script>
+    // --- SETUP
+
     $(document).ready(function () {
+        // CLICK ACTIONS
+
         $('.flip-button').on('click', function () {
             $('.card').toggleClass('flipped');
         });
 
-        $('.button.one').on('click', function () {
-            scoreAnimation('.retest-stack-deck', 'rgb(254, 0, 0)');
+        $('.button').on('click', function () {
+            if (this.classList[2] === undefined) {
+                if (this.classList[1] == "one") scoreAnimation('.retest-stack-deck', 'rgb(254, 0, 0)', 1);
+                if (this.classList[1] == "two") scoreAnimation('.retest-stack-deck', 'rgb(242, 159, 0)', 2);
+                if (this.classList[1] == "three") scoreAnimation('.retest-stack-deck', 'rgb(254, 242, 0)', 3);
+                if (this.classList[1] == "four") scoreAnimation('.entire-stack-deck', 'rgb(0, 189, 123)', 4);
+                if (this.classList[1] == "five") scoreAnimation('.entire-stack-deck', 'rgb(0, 0, 254)', 5);
+            }
         });
 
-        $('.button.two').on('click', function () {
-            scoreAnimation('.retest-stack-deck', 'rgb(242, 159, 0)');
+        $('.entire-stack-button').on('click', function () {
+            currentCardCount = 0;
+            getFlashcards();
+            $('.score-buttons .button').removeClass("disabled");
+            loadCard(cards[0].id);
         });
 
-        $('.button.three').on('click', function () {
-            scoreAnimation('.retest-stack-deck', 'rgb(254, 242, 0)');
+        $('.retest-stack-button').on('click', function () {
+            currentCardCount = 0;
+            getRetestStack();
+            setCounter(currentCardCount);
+            $('.score-buttons .button').removeClass("disabled");
+            loadCard(cards[0].id);
         });
 
-        $('.button.four').on('click', function () {
-            scoreAnimation('.entire-stack-deck', 'rgb(0, 189, 123)');
-        });
+        // GAME SETUP
 
-        $('.button.five').on('click', function () {
-            scoreAnimation('.entire-stack-deck', 'rgb(0, 0, 254)');
-        });
+        initializeGame();
     });
 
-    function scoreAnimation(deck, color) {
-        $('.card').fadeOut();
+    // --- ANIMATION HANDLERS
+
+    var animTime = 500;
+
+    function scoreAnimation(deck, color, score) {
+        $('.card').fadeOut(animTime);
+        setScore(currentCardId, score);
+        currentCardCount++;
         $(deck + ' > .highlight-anim')
             .css('box-shadow', '0 0 30px ' + color)
             .toggleClass('animated');
         setTimeout(function () {
-            $(deck + ' > .highlight-anim').toggleClass('animated');
-            $('.card').fadeIn();
-        }, 2000);
+            loadCard(currentCardCount);
+            setTimeout(function () {
+                $(deck + ' > .highlight-anim').toggleClass('animated');
+                $('.card').fadeIn(animTime);
+                setCounter(currentCardCount);
+                getRetestStackCount();
+            }, animTime);
+        }, animTime);
+
     }
+
+    // --- FLASHCARD LOGIC
+
+    var cards = [],
+        deck = [],
+        scores = [],
+        prof = "",
+        currentCardId = 0,
+        currentCardCount = 0;
+
+    function initializeGame() {
+        getFlashcards();
+        getProf();
+        getScores();
+        loadDeck();
+        loadScores();
+        setCounter(currentCardCount);
+        getRetestStackCount();
+    }
+
+    function loadCard(id) {
+        if (currentCardCount < cards.length) {
+            var card = cards[id];
+            currentCardId = id;
+            $('.side-a-text').html(card['prompt_side']);
+            $('.side-b-text').html(card['answer_side']);
+        } else {
+            $('.side-a-text').html("Deck Complete!");
+            $('.side-b-text').html("Deck Complete!");
+            $('.score-buttons .button').addClass("disabled");
+        }
+    }
+
+    function loadDeck() {
+        $('.deck-name').html(deck['deck_title']);
+        $('.professor').html(prof);
+    }
+
+    function loadScores() {
+        var zeros = 0,
+            ones = 0,
+            twos = 0,
+            threes = 0,
+            fours = 0,
+            fives = 0;
+
+        for (var i in scores) {
+            if (scores[i][1] === 0) zeros++;
+            else if (scores[i][1] === 1) ones++;
+            else if (scores[i][1] === 2) twos++;
+            else if (scores[i][1] === 3) threes++;
+            else if (scores[i][1] === 4) fours++;
+            else if (scores[i][1] === 5) fives++;
+        }
+
+        $('.zeros').css('width', (zeros / scores.length * 100) + "%");
+        $('.ones').css('width', (ones / scores.length * 100) + "%");
+        $('.twos').css('width', (twos / scores.length * 100) + "%");
+        $('.threes').css('width', (threes / scores.length * 100) + "%");
+        $('.fours').css('width', (fours / scores.length * 100) + "%");
+        $('.fives').css('width', (fives / scores.length * 100) + "%");
+    }
+
+    function getFlashcards() {
+        cards = JSON.parse(<?php echo($flashcardset)?>);
+        deck = JSON.parse(<?php echo($flashcardinfo)?>);
+    }
+
+    function getProf() {
+        prof = "<?php echo $flashcardprof?>";
+    }
+
+    function getScores() {
+        scores = [];
+        for (var i in cards) {
+            if (cards[i].score === undefined) cards[i].score = 0;
+            scores.push([cards[i].id, cards[i].score]);
+        }
+    }
+
+    function getRetestStack() {
+        var testCards = [];
+        for (var i in cards) if (cards[i].score < 4 && cards[i].score > 0) testCards.push(cards[i]);
+        cards = testCards;
+        getRetestStackCount();
+    }
+
+    function getRetestStackCount() {
+        var count = 0;
+        for (var i in cards) if (cards[i].score < 4 && cards[i].score > 0) count++;
+        $('.retest-stack-count').html(count);
+    }
+
+    function setScore(id, score) {
+        cards[id].score = score;
+        scores[id][1] = score;
+        loadScores();
+    }
+
+    function setCounter(count) {
+        var counter = 0;
+        count == cards.length ? counter = count : counter = count + 1;
+        $('.flashcards-counter-text').html(counter + "/" + cards.length);
+    }
+
 </script>
 </html>
