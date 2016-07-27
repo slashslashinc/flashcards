@@ -780,7 +780,6 @@ $flashcardprof = "Dr. Professorson";
         if (currentCardCount < cards.length) {
             var card = cards[count];
             currentCardId = cards[count].id;
-            console.log(currentCardId);
             $('.side-a-text').html(card['prompt_side']);
             $('.side-b-text').html(card['answer_side']);
         } else {
@@ -857,7 +856,6 @@ $flashcardprof = "Dr. Professorson";
         for (var j in scores) if (scores[j][0] == id) cardScore = scores[j];
         card.score = score;
         cardScore[1] = score;
-        console.log(cardScore);
         loadScores();
 
         // TODO: Add POST for score to keep track of student score for each card
