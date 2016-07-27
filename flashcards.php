@@ -672,7 +672,7 @@ $flashcardprof = "Dr. Professorson";
             currentCardCount = 0;
             getFlashcards();
             $('.score-buttons .button').removeClass("disabled");
-            loadCard(cards[0].id);
+            loadCard(currentCardCount);
         });
 
         $('.retest-stack-button').on('click', function () {
@@ -680,7 +680,7 @@ $flashcardprof = "Dr. Professorson";
             getRetestStack();
             setCounter(currentCardCount);
             $('.score-buttons .button').removeClass("disabled");
-            loadCard(cards[0].id);
+            loadCard(currentCardCount);
         });
 
         // GAME SETUP
@@ -730,10 +730,11 @@ $flashcardprof = "Dr. Professorson";
         getRetestStackCount();
     }
 
-    function loadCard(id) {
+    function loadCard(count) {
         if (currentCardCount < cards.length) {
-            var card = cards[id];
-            currentCardId = id;
+            var card = cards[count];
+            currentCardId = cards[count].id;
+            console.log(currentCardId);
             $('.side-a-text').html(card['prompt_side']);
             $('.side-b-text').html(card['answer_side']);
         } else {
@@ -804,13 +805,18 @@ $flashcardprof = "Dr. Professorson";
     }
 
     function setScore(id, score) {
-        cards[id].score = score;
-        scores[id][1] = score;
+        var card = {},
+            cardScore = [];
+        for (var i in cards) if (cards[i].id == id) card = cards[i];
+        for (var j in scores) if (scores[j][0] == id) cardScore = scores[j];
+        card.score = score;
+        cardScore[1] = score;
+        console.log(cardScore);
         loadScores();
     }
 
     function setCounter(count) {
-        var counter = 0;
+        var counter;
         count == cards.length ? counter = count : counter = count + 1;
         $('.flashcards-counter-text').html(counter + "/" + cards.length);
     }
