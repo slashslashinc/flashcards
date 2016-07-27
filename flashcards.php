@@ -197,42 +197,88 @@ $flashcardprof = "Dr. Professorson";
             text-shadow: 1px 1px 3px #575757;
         }
 
-        .card,
+        .card-container {
+            position: absolute;
+            top: 88px;
+            left: 276px;
+            -webkit-perspective: 1000;
+            -moz-perspective: 1000;
+            -o-perspective: 1000;
+            perspective: 1000;
+        }
+
+        .card-container,
         .card > .side-a,
         .card > .side-b {
-            position: absolute;
             width: 236px;
             height: 327px;
         }
 
         .card {
-            top: 88px;
-            left: 276px;
-            -webkit-transform-style: preserve-3d;
-            transition: all 0.3s;
-            -webkit-transition: all 0.3s;
+            -moz-transform: perspective(1000px);
+            -moz-transform-style: preserve-3d;
+            position: relative;
         }
 
         .card > .side-a,
         .card > .side-b {
+            position: absolute;
+            top: 0;
+            left: 0;
             padding: 62px 32px;
             text-align: center;
-            -webkit-backface-visibility: hidden;
+            color: #ffffff;
             background: url("<?php echo(base_url() . $card_bg);?>") no-repeat top center;
             background-size: 100%;
             filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $card_bg);?>', sizingMethod='scale');
             -ms-filter: "progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $card_bg);?>', sizingMethod='scale')";
-            color: #ffffff;
+
+            -webkit-backface-visibility: hidden;
+            -moz-backface-visibility: hidden;
+            -o-backface-visibility: hidden;
+            backface-visibility: hidden;
+
+            -webkit-transition: 0.6s;
+            -webkit-transform-style: preserve-3d;
+
+            -moz-transition: 0.6s;
+            -moz-transform-style: preserve-3d;
+
+            -o-transition: 0.6s;
+            -o-transform-style: preserve-3d;
+
+            -ms-transition: 0.6s;
+            -ms-transform-style: preserve-3d;
+
+            transition: 0.6s;
+            transform-style: preserve-3d;
+        }
+
+        .card > .side-a {
+            z-index: 2;
         }
 
         .card > .side-b {
-            transform: rotateY(180deg);
-            -webkit-transform: rotateY(180deg);
+            -webkit-transform: rotateY(-180deg);
+            -moz-transform: rotateY(-180deg);
+            -o-transform: rotateY(-180deg);
+            -ms-transform: rotateY(-180deg);
+            transform: rotateY(-180deg);
         }
 
-        .card.flipped {
-            transform: rotateY(-180deg);
-            -webkit-transform: rotateY(-180deg);
+        .card.flipped > .side-a {
+            -webkit-transform: rotateY(180deg);
+            -moz-transform: rotateY(180deg);
+            -o-transform: rotateY(180deg);
+            transform: rotateY(180deg);
+        }
+
+        .card.flipped > .side-b {
+            -webkit-transform: rotateY(0deg);
+            -moz-transform: rotateY(0deg);
+            -o-transform: rotateY(0deg);
+            -ms-transform: rotateY(0deg);
+            transform: rotateY(0deg);
         }
 
         .retest-stack-deck {
@@ -555,16 +601,18 @@ $flashcardprof = "Dr. Professorson";
             <div class="retest-stack-button">
                 <div class="hover-anim"></div>
             </div>
-            <div class="card">
-                <div class="side-a">
+            <div class="card-container">
+                <div class="card">
+                    <div class="side-a">
                     <span class="side-a-text">
                         Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.
                     </span>
-                </div>
-                <div class="side-b">
+                    </div>
+                    <div class="side-b">
                     <span class="side-b-text">
                         Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.
                     </span>
+                    </div>
                 </div>
             </div>
             <div class="score-bar">
