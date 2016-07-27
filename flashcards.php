@@ -228,6 +228,7 @@ $flashcardprof = "Dr. Professorson";
             padding: 62px 32px;
             text-align: center;
             color: #ffffff;
+
             background: url("<?php echo(base_url() . $card_bg);?>") no-repeat top center;
             background-size: 100%;
             filter: progid:DXImageTransform.Microsoft.AlphaImageLoader(src='<?php echo(base_url() . $card_bg);?>', sizingMethod='scale');
@@ -239,18 +240,15 @@ $flashcardprof = "Dr. Professorson";
             backface-visibility: hidden;
 
             -webkit-transition: 0.6s;
-            -webkit-transform-style: preserve-3d;
-
             -moz-transition: 0.6s;
-            -moz-transform-style: preserve-3d;
-
             -o-transition: 0.6s;
-            -o-transform-style: preserve-3d;
-
             -ms-transition: 0.6s;
-            -ms-transform-style: preserve-3d;
-
             transition: 0.6s;
+
+            -webkit-transform-style: preserve-3d;
+            -moz-transform-style: preserve-3d;
+            -o-transform-style: preserve-3d;
+            -ms-transform-style: preserve-3d;
             transform-style: preserve-3d;
         }
 
@@ -550,7 +548,7 @@ $flashcardprof = "Dr. Professorson";
             width: 213px;
             height: 45px;
             background: transparent;
-            border-radius: 2px 2px 5px 5px;
+            border-radius: 3px 3px 5px 5px;
             overflow: hidden;
         }
 
@@ -560,30 +558,61 @@ $flashcardprof = "Dr. Professorson";
             margin: 0;
             padding: 0;
             float: left;
+            -webkit-transition: width 1s;
+            -moz-transition: width 1s;
+            -o-transition: width 1s;
+            -ms-transition: width 1s;
+            transition: width 1s;
         }
 
         .score-bar > .score.zeros {
-            background-color: gray;
+            background: lightgray; /* For browsers that do not support gradients */
+            background: -webkit-linear-gradient(lightgray, gray); /* For Safari 5.1 to 6.0 */
+            background: -o-linear-gradient(lightgray, gray); /* For Opera 11.1 to 12.0 */
+            background: -moz-linear-gradient(lightgray, gray); /* For Firefox 3.6 to 15 */
+            background: linear-gradient(lightgray, gray); /* Standard syntax */
         }
 
         .score-bar > .score.ones {
-            background-color: rgb(254, 0, 0);
+            background: rgb(254, 0, 0); /* For browsers that do not support gradients */
+            background: -webkit-linear-gradient(rgb(254, 0, 0), rgb(180, 0, 0)); /* For Safari 5.1 to 6.0 */
+            background: -o-linear-gradient(rgb(254, 0, 0), rgb(180, 0, 0)); /* For Opera 11.1 to 12.0 */
+            background: -moz-linear-gradient(rgb(254, 0, 0), rgb(180, 0, 0)); /* For Firefox 3.6 to 15 */
+            background: linear-gradient(rgb(254, 0, 0), rgb(180, 0, 0)); /* Standard syntax */
         }
 
         .score-bar > .score.twos {
-            background-color: rgb(242, 159, 0);
+            background: rgb(242, 159, 0); /* For browsers that do not support gradients */
+            background: -webkit-linear-gradient(rgb(242, 159, 0), rgb(180, 105, 0)); /* For Safari 5.1 to 6.0 */
+            background: -o-linear-gradient(rgb(242, 159, 0), rgb(180, 105, 0)); /* For Opera 11.1 to 12.0 */
+            background: -moz-linear-gradient(rgb(242, 159, 0), rgb(180, 105, 0)); /* For Firefox 3.6 to 15 */
+            background: linear-gradient(rgb(242, 159, 0), rgb(180, 105, 0)); /* Standard syntax */
         }
 
         .score-bar > .score.threes {
-            background-color: rgb(254, 242, 0);
+            background: rgb(254, 242, 0); /* For browsers that do not support gradients */
+            background: -webkit-linear-gradient(rgb(254, 242, 0), rgb(180, 168, 0)); /* For Safari 5.1 to 6.0 */
+            background: -o-linear-gradient(rgb(254, 242, 0), rgb(180, 168, 0)); /* For Opera 11.1 to 12.0 */
+            background: -moz-linear-gradient(rgb(254, 242, 0), rgb(180, 168, 0)); /* For Firefox 3.6 to 15 */
+            background: linear-gradient(rgb(254, 242, 0), rgb(180, 168, 0)); /* Standard syntax */
         }
 
         .score-bar > .score.fours {
             background-color: rgb(0, 189, 123);
+            background: rgb(0, 189, 123); /* For browsers that do not support gradients */
+            background: -webkit-linear-gradient(rgb(0, 189, 123), rgb(0, 140, 85)); /* For Safari 5.1 to 6.0 */
+            background: -o-linear-gradient(rgb(0, 189, 123), rgb(0, 140, 85)); /* For Opera 11.1 to 12.0 */
+            background: -moz-linear-gradient(rgb(0, 189, 123), rgb(0, 140, 85)); /* For Firefox 3.6 to 15 */
+            background: linear-gradient(rgb(0, 189, 123), rgb(0, 140, 85)); /* Standard syntax */
         }
 
         .score-bar > .score.fives {
             background-color: rgb(0, 0, 254);
+            background: rgb(0, 0, 254); /* For browsers that do not support gradients */
+            background: -webkit-linear-gradient(rgb(0, 0, 254), rgb(0, 0, 180)); /* For Safari 5.1 to 6.0 */
+            background: -o-linear-gradient(rgb(0, 0, 254), rgb(0, 0, 180)); /* For Opera 11.1 to 12.0 */
+            background: -moz-linear-gradient(rgb(0, 0, 254), rgb(0, 0, 180)); /* For Firefox 3.6 to 15 */
+            background: linear-gradient(rgb(0, 0, 254), rgb(0, 0, 180)); /* Standard syntax */
         }
     </style>
 </head>
@@ -709,17 +738,19 @@ $flashcardprof = "Dr. Professorson";
 
     function resetCard() {
         var $card = $('.card');
+
+        $('.score-buttons .button').addClass("disabled");
         $card.fadeOut(animTime);
         setTimeout(function () {
             $card.removeClass('flipped');
             setTimeout(function () {
+                $('.score-buttons .button').removeClass("disabled");
                 $card.fadeIn(animTime);
             }, animTime);
         }, animTime);
     }
 
     function resetStack() {
-        $('.score-buttons .button').removeClass("disabled");
         resetCard();
         setTimeout(function () {
             loadCard(currentCardCount);
@@ -828,12 +859,12 @@ $flashcardprof = "Dr. Professorson";
         cardScore[1] = score;
         console.log(cardScore);
         loadScores();
+
+        // TODO: Add POST for score to keep track of student score for each card
     }
 
     function setCounter(count) {
-        var counter;
-        count == cards.length ? counter = count : counter = count + 1;
-        $('.flashcards-counter-text').html(counter + "/" + cards.length);
+        $('.flashcards-counter-text').html((count == cards.length ? count : count + 1) + "/" + cards.length);
     }
 
 </script>
