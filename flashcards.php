@@ -671,16 +671,14 @@ $flashcardprof = "Dr. Professorson";
         $('.entire-stack-button').on('click', function () {
             currentCardCount = 0;
             getFlashcards();
-            $('.score-buttons .button').removeClass("disabled");
-            loadCard(currentCardCount);
+            resetStack();
         });
 
         $('.retest-stack-button').on('click', function () {
             currentCardCount = 0;
             getRetestStack();
             setCounter(currentCardCount);
-            $('.score-buttons .button').removeClass("disabled");
-            loadCard(currentCardCount);
+            resetStack();
         });
 
         // GAME SETUP
@@ -693,7 +691,7 @@ $flashcardprof = "Dr. Professorson";
     var animTime = 500;
 
     function scoreAnimation(deck, color, score) {
-        $('.card').fadeOut(animTime);
+        resetCard();
         setScore(currentCardId, score);
         currentCardCount++;
         $(deck + ' > .highlight-anim')
@@ -703,12 +701,29 @@ $flashcardprof = "Dr. Professorson";
             loadCard(currentCardCount);
             setTimeout(function () {
                 $(deck + ' > .highlight-anim').toggleClass('animated');
-                $('.card').fadeIn(animTime);
                 setCounter(currentCardCount);
                 getRetestStackCount();
             }, animTime);
         }, animTime);
+    }
 
+    function resetCard() {
+        var $card = $('.card');
+        $card.fadeOut(animTime);
+        setTimeout(function () {
+            $card.removeClass('flipped');
+            setTimeout(function () {
+                $card.fadeIn(animTime);
+            }, animTime);
+        }, animTime);
+    }
+
+    function resetStack() {
+        $('.score-buttons .button').removeClass("disabled");
+        resetCard();
+        setTimeout(function () {
+            loadCard(currentCardCount);
+        }, animTime);
     }
 
     // --- FLASHCARD LOGIC
