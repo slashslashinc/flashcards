@@ -300,8 +300,8 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .retest-stack-deck > .highlight-anim.animated {
-            -webkit-animation: fadeinout 2s linear forwards;
-            animation: fadeinout 2s linear forwards;
+            -webkit-animation: fadeinout 1s linear forwards;
+            animation: fadeinout 1s linear forwards;
         }
 
         .entire-stack-deck {
@@ -325,8 +325,8 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .entire-stack-deck > .highlight-anim.animated {
-            -webkit-animation: fadeinout 2s linear forwards;
-            animation: fadeinout 2s linear forwards;
+            -webkit-animation: fadeinout 1s linear forwards;
+            animation: fadeinout 1s linear forwards;
         }
 
         .entire-stack-deck > .deck-name {
@@ -744,7 +744,7 @@ $flashcardprof = "Dr. Professorson";
         setTimeout(function () {
             $card.removeClass('flipped');
             setTimeout(function () {
-                $('.score-buttons .button').removeClass("disabled");
+                if (currentCardCount < cards.length) $('.score-buttons .button').removeClass("disabled");
                 $card.fadeIn(animTime);
             }, animTime);
         }, animTime);
