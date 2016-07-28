@@ -632,16 +632,8 @@ $flashcardprof = "Dr. Professorson";
             </div>
             <div class="card-container">
                 <div class="card">
-                    <div class="side-a">
-                    <span class="side-a-text">
-                        Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.
-                    </span>
-                    </div>
-                    <div class="side-b">
-                    <span class="side-b-text">
-                        Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.
-                    </span>
-                    </div>
+                    <div class="side-a"><span class="side-a-text"></span></div>
+                    <div class="side-b"><span class="side-b-text"></span></div>
                 </div>
             </div>
             <div class="score-bar">
@@ -764,7 +756,8 @@ $flashcardprof = "Dr. Professorson";
         scores = [],
         prof = "",
         currentCardId = 0,
-        currentCardCount = 0;
+        currentCardCount = 0,
+        firstTime = true;
 
     function initializeGame() {
         getFlashcards();
@@ -774,6 +767,14 @@ $flashcardprof = "Dr. Professorson";
         loadScores();
         setCounter(currentCardCount);
         getRetestStackCount();
+        if (!firstTime) {
+            $('.side-a-text').html("Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.");
+            $('.side-b-text').html("Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.");
+        } else {
+            currentCardCount = 0;
+            getFlashcards();
+            resetStack();
+        }
     }
 
     function loadCard(count) {
@@ -832,6 +833,8 @@ $flashcardprof = "Dr. Professorson";
         scores = [];
         for (var i in cards) {
             if (cards[i].score === undefined) cards[i].score = 0;
+            if (cards[i].score != 0) firstTime = false;
+            console.log(firstTime);
             scores.push([cards[i].id, cards[i].score]);
         }
     }
