@@ -811,7 +811,8 @@ $flashcardprof = "Dr. Professorson";
             twos = 0,
             threes = 0,
             fours = 0,
-            fives = 0;
+            fives = 0,
+            runningTotal = 0;
 
         for (var i in scores) {
             if (scores[i][1] === 0) zeros++;
@@ -829,11 +830,7 @@ $flashcardprof = "Dr. Professorson";
         $('.fours').css('width', (fours / scores.length * 100) + "%");
         $('.fives').css('width', (fives / scores.length * 100) + "%");
 
-        var runningTotal = 0;
-        runningTotal += (fives * 4);
-        runningTotal += (fours * 3);
-        runningTotal += (threes * 2);
-        runningTotal += (twos);
+        runningTotal = (fives * 4) + (fours * 3) + (threes * 2) + (twos);
         currentScore = (runningTotal / (4 * totalCards))*100;
 
         $('.score-text').html(currentScore + "%");
