@@ -130,7 +130,7 @@ $flashcardprof = "Dr. Professorson";
 <head>
     <meta charset="utf-8">
     <link rel="manifest" href="manifest.json">
-    <title>AmPopMusic.com - [PUT DECK TITLE HERE]</title>
+    <title>AmPopMusic.com - <!-- TODO: PUT DECK TITLE HERE --></title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <style>
@@ -201,10 +201,10 @@ $flashcardprof = "Dr. Professorson";
             position: absolute;
             top: 88px;
             left: 276px;
-            -webkit-perspective: 1000;
-            -moz-perspective: 1000;
-            -o-perspective: 1000;
-            perspective: 1000;
+            -webkit-perspective: 1000px;
+            -moz-perspective: 1000px;
+            -o-perspective: 1000px;
+            perspective: 1000px;
         }
 
         .card-container,
@@ -563,13 +563,15 @@ $flashcardprof = "Dr. Professorson";
             display: inline-block;
             height: 100%;
             margin: 0;
-            padding: 0;
+            padding: 13px 0 0 0;
             float: left;
+            color: #fff;
             -webkit-transition: width 1s;
             -moz-transition: width 1s;
             -o-transition: width 1s;
             -ms-transition: width 1s;
             transition: width 1s;
+            text-align: center;
         }
 
         .score-bar > .score.zeros {
@@ -605,7 +607,6 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .score-bar > .score.fours {
-            background-color: rgb(0, 189, 123);
             background: rgb(0, 189, 123); /* For browsers that do not support gradients */
             background: -webkit-linear-gradient(rgb(0, 189, 123), rgb(0, 140, 85)); /* For Safari 5.1 to 6.0 */
             background: -o-linear-gradient(rgb(0, 189, 123), rgb(0, 140, 85)); /* For Opera 11.1 to 12.0 */
@@ -614,7 +615,6 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .score-bar > .score.fives {
-            background-color: rgb(0, 0, 254);
             background: rgb(0, 0, 254); /* For browsers that do not support gradients */
             background: -webkit-linear-gradient(rgb(0, 0, 254), rgb(0, 0, 180)); /* For Safari 5.1 to 6.0 */
             background: -o-linear-gradient(rgb(0, 0, 254), rgb(0, 0, 180)); /* For Opera 11.1 to 12.0 */
@@ -811,8 +811,7 @@ $flashcardprof = "Dr. Professorson";
             twos = 0,
             threes = 0,
             fours = 0,
-            fives = 0,
-            runningTotal = 0;
+            fives = 0;
 
         for (var i in scores) {
             if (scores[i][1] === 0) zeros++;
@@ -823,17 +822,21 @@ $flashcardprof = "Dr. Professorson";
             else if (scores[i][1] === 5) fives++;
         }
 
-        $('.zeros').css('width', (zeros / scores.length * 100) + "%");
-        $('.ones').css('width', (ones / scores.length * 100) + "%");
-        $('.twos').css('width', (twos / scores.length * 100) + "%");
-        $('.threes').css('width', (threes / scores.length * 100) + "%");
-        $('.fours').css('width', (fours / scores.length * 100) + "%");
-        $('.fives').css('width', (fives / scores.length * 100) + "%");
+        renderScore('.zeros', zeros);
+        renderScore('.ones', ones);
+        renderScore('.twos', twos);
+        renderScore('.threes', threes);
+        renderScore('.fours', fours);
+        renderScore('.fives', fives);
 
-        runningTotal = (fives * 4) + (fours * 3) + (threes * 2) + (twos);
-        currentScore = (runningTotal / (4 * totalCards))*100;
-
+        currentScore = (((fives * 4) + (fours * 3) + (threes * 2) + (twos)) / (4 * totalCards)) * 100;
         $('.score-text').html(currentScore + "%");
+    }
+
+    function renderScore(selector, score) {
+        $(selector)
+            .css('width', (score / scores.length * 100) + "%")
+            .html((score / scores.length * 100) >= 20 ? (score / scores.length * 100) + '%' : '');
     }
 
     function getFlashcards() {
