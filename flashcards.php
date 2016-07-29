@@ -541,6 +541,13 @@ $flashcardprof = "Dr. Professorson";
             content: none;
         }
 
+        .score-text {
+            position: absolute;
+            top: 100px;
+            left: 650px;
+            font-size: 14px;
+        }
+
         .score-bar {
             position: relative;
             top: 97px;
@@ -636,6 +643,7 @@ $flashcardprof = "Dr. Professorson";
                     <div class="side-b"><span class="side-b-text"></span></div>
                 </div>
             </div>
+            <span class="score-text"></span>
             <div class="score-bar">
                 <div class="score ones"></div>
                 <div class="score twos"></div>
@@ -757,6 +765,8 @@ $flashcardprof = "Dr. Professorson";
         prof = "",
         currentCardId = 0,
         currentCardCount = 0,
+        currentScore = 0,
+        totalCards = 0,
         firstTime = true;
 
     function initializeGame() {
@@ -818,11 +828,21 @@ $flashcardprof = "Dr. Professorson";
         $('.threes').css('width', (threes / scores.length * 100) + "%");
         $('.fours').css('width', (fours / scores.length * 100) + "%");
         $('.fives').css('width', (fives / scores.length * 100) + "%");
+
+        var runningTotal = 0;
+        runningTotal += (fives * 4);
+        runningTotal += (fours * 3);
+        runningTotal += (threes * 2);
+        runningTotal += (twos);
+        currentScore = (runningTotal / (4 * totalCards))*100;
+
+        $('.score-text').html(currentScore + "%");
     }
 
     function getFlashcards() {
         cards = JSON.parse(<?php echo($flashcardset)?>);
         deck = JSON.parse(<?php echo($flashcardinfo)?>);
+        totalCards = cards.length;
     }
 
     function getProf() {
@@ -862,6 +882,7 @@ $flashcardprof = "Dr. Professorson";
         loadScores();
 
         // TODO: Add POST for score to keep track of student score for each card
+        // TODO: Add POST for score to keep track of student score for the deck
     }
 
     function setCounter(count) {
