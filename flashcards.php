@@ -879,7 +879,9 @@ $flashcardprof = "Dr. Professorson";
         loadScores();
 
         // TODO: Add POST for score to keep track of student score for each card
-        // TODO: Add POST for score to keep track of student score for the deck
+        // POST: card.score to card table
+        // TODO: Add POST for score to keep track of student score for the deck (currentScore)
+        // POST: currentScore to deck table
     }
 
     function setCounter(count) {
