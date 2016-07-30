@@ -267,7 +267,7 @@ $decks = json_encode(
     }
 
     function getDecks() {
-        decks = <?php echo(json_decode($decks))?>;
+        decks = JSON.parse(<?php echo($decks)?>);
         currentDeck = <?php echo($currentdeck)?>;
         loadScores();
         renderDecks();
@@ -302,7 +302,6 @@ $decks = json_encode(
 
     function renderDecks() {
         for (var i in decks) {
-            console.log(decks[i]);
             if (decks[i].id == currentDeck) {
                 $('.scores-container').prepend(
                     '<div class="deck current-deck">' +
