@@ -18,7 +18,9 @@ $flashcardset = json_encode(
             "deck_title":"",
             "date_created":null,
             "date_last_modified":null,
-            "status":"active"
+            "status":"active",
+            "audio_url": "",
+            "image_url": ""
         },
         {
             "id":"3",
@@ -30,31 +32,37 @@ $flashcardset = json_encode(
             "deck_title":"",
             "date_created":null,
             "date_last_modified":null,
-            "status":"active"
+            "status":"active",
+            "audio_url": "",
+            "image_url": ""
         },
         {
             "id":"1",
-            "prompt_side":"What is my name?",
-            "answer_side":"Mike Jones!",
+            "prompt_side":"Who is this artist?",
+            "answer_side":"Louis Armstrong",
             "professor_id":"2",
             "is_deck":"0",
             "flashcard_deck_id":"2",
             "deck_title":"",
             "date_created":null,
             "date_last_modified":null,
-            "status":"active"
+            "status":"active",
+            "audio_url": "",
+            "image_url": "img/card_images/louis_armstrong.jpg"
         },
         {
             "id":"2",
-            "prompt_side":"What time is it?",
-            "answer_side":"11:04am",
+            "prompt_side":"What is the name of this song?",
+            "answer_side":"When the Saints Go Marching In",
             "professor_id":"2",
             "is_deck":"0",
             "flashcard_deck_id":"2",
             "deck_title":"",
             "date_created":null,
             "date_last_modified":null,
-            "status":"active"
+            "status":"active",
+            "audio_url": "audio/card_audio/Louis Armstrong - When The Saints Go Marching In.mp3",
+            "image_url": ""
         },
         {
             "id":"5",
@@ -66,7 +74,9 @@ $flashcardset = json_encode(
             "deck_title":"",
             "date_created":null,
             "date_last_modified":null,
-            "status":"active"
+            "status":"active",
+            "audio_url": "",
+            "image_url": ""
         },
         {
             "id":"6",
@@ -78,7 +88,9 @@ $flashcardset = json_encode(
             "deck_title":"",
             "date_created":null,
             "date_last_modified":null,
-            "status":"active"
+            "status":"active",
+            "audio_url": "",
+            "image_url": ""
         },
         {
             "id":"7",
@@ -90,7 +102,9 @@ $flashcardset = json_encode(
             "deck_title":"",
             "date_created":null,
             "date_last_modified":null,
-            "status":"active"
+            "status":"active",
+            "audio_url": "",
+            "image_url": ""
         },
         {
             "id":"8",
@@ -102,7 +116,9 @@ $flashcardset = json_encode(
             "deck_title":"",
             "date_created":null,
             "date_last_modified":null,
-            "status":"active"
+            "status":"active",
+            "audio_url": "",
+            "image_url": ""
         }
     ]');
 
@@ -252,10 +268,6 @@ $flashcardprof = "Dr. Professorson";
             transform-style: preserve-3d;
         }
 
-        .card > .side-a {
-            z-index: 2;
-        }
-
         .card > .side-b {
             -webkit-transform: rotateY(-180deg);
             -moz-transform: rotateY(-180deg);
@@ -277,6 +289,40 @@ $flashcardprof = "Dr. Professorson";
             -o-transform: rotateY(0deg);
             -ms-transform: rotateY(0deg);
             transform: rotateY(0deg);
+        }
+
+        .card .side-content,
+        .card .side-content {
+            overflow-y: scroll;
+            display: block;
+            max-height: 200px;
+        }
+
+        .card .side-content > img {
+            display: block;
+            width: 100%;
+            padding: 5px 0;
+        }
+
+        .card .side-content > .audio-buttons {
+            position: relative;
+            display: block;
+            width: 100%;
+            padding: 5px 0;
+        }
+
+        .card .side-content > .audio-buttons > .audio-button {
+            width: auto;
+            background-color: transparent;
+            border: 2px solid white;
+            color: white;
+            border-radius: 5px;
+        }
+
+        .card .side-content > .audio-buttons > .audio-button:hover,
+        .card .side-content > .audio-buttons > .audio-button:focus {
+            cursor: pointer;
+            background-color: rgba(255, 255, 255, 0.3)!important;
         }
 
         .retest-stack-deck {
@@ -639,8 +685,28 @@ $flashcardprof = "Dr. Professorson";
             </div>
             <div class="card-container">
                 <div class="card">
-                    <div class="side-a"><span class="side-a-text"></span></div>
-                    <div class="side-b"><span class="side-b-text"></span></div>
+                    <div class="side-a">
+                        <div class="side-content">
+                            <span class="side-a-text"></span>
+                            <audio src="" class="side-a-audio" id="player"></audio>
+                            <div class="audio-buttons">
+
+                                <button class="audio-button audio-play" onclick="toggleAudio(true)">Play</button>
+                                <button class="audio-button audio-pause" onclick="toggleAudio(false)">Pause</button>
+                                <button class="audio-button"
+                                        onclick="document.getElementById('player').currentTime = 0">
+                                    Restart</button>
+                            </div>
+                            <img src="" class="side-a-image">
+                        </div>
+                    </div>
+                    <div class="side-b">
+                        <div class="side-content">
+                            <span class="side-b-text">
+
+                            </span>
+                        </div>
+                    </div>
                 </div>
             </div>
             <span class="score-text"></span>
@@ -788,14 +854,36 @@ $flashcardprof = "Dr. Professorson";
     }
 
     function loadCard(count) {
+        var $sideA = $('.side-a-text'),
+            $sideB = $('.side-b-text'),
+            $audio = $('.side-a-audio'),
+            $audioButtons = $('.audio-buttons'),
+            $image = $('.side-a-image');
+
         if (currentCardCount < cards.length) {
             var card = cards[count];
+
             currentCardId = cards[count].id;
-            $('.side-a-text').html(card['prompt_side']);
-            $('.side-b-text').html(card['answer_side']);
+
+            $sideA.html(card['prompt_side']);
+            $sideB.html(card['answer_side']);
+
+            if (card["audio_url"] != "" && card["audio_url"] != undefined) {
+                $audio.attr("src", encodeURI("<?php echo base_url() ?>" + card["audio_url"])).show();
+                $audioButtons.show();
+                toggleAudio(true);
+            } else {
+                $audio.hide();
+                $audioButtons.hide();
+                toggleAudio(false);
+            }
+
+            card["image_url"] != "" && card["image_url"] != undefined
+                ? $image.attr("src", encodeURI("<?php echo base_url() ?>" + card["image_url"])).show()
+                : $image.hide();
         } else {
-            $('.side-a-text').html("Deck Complete!");
-            $('.side-b-text').html("Deck Complete!");
+            $sideA.html("Deck Complete!");
+            $sideB.html("Deck Complete!");
             $('.score-buttons .button').addClass("disabled");
         }
     }
@@ -889,6 +977,20 @@ $flashcardprof = "Dr. Professorson";
 
     function setCounter(count) {
         $('.flashcards-counter-text').html((count == cards.length ? count : count + 1) + "/" + cards.length);
+    }
+
+    function toggleAudio(play) {
+        var player = document.getElementById('player');
+
+        if (play) {
+            player.play();
+            $('.audio-play').hide();
+            $('.audio-pause').show();
+        } else {
+            player.pause();
+            $('.audio-play').show();
+            $('.audio-pause').hide();
+        }
     }
 
 </script>
