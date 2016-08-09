@@ -998,6 +998,8 @@ $flashcardprof = "Dr. Professorson";
         cardToScore.score = score;
         cardScore[1] = score;
 
+        $.post('<?php echo base_url()?>updateScore/' + card.id + '/' + card.score + '/<?php echo($this->session->userdata[id]) ?>');
+
         loadScores();
     }
 
