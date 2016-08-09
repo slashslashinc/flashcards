@@ -971,7 +971,7 @@ $studentid = "3";
         cardScore[1] = score;
         loadScores();
 
-        $.post('<?php echo base_url()?>updateScore/<?php echo $studentid?>/' + card.id + '/' + card.score);
+        $.post('<?php echo base_url()?>updateScore/' + card.id + '/' + card.score + '/<?php echo $studentid?>');
     }
 
     function setCounter(count) {
