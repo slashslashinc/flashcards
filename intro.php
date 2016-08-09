@@ -7,60 +7,35 @@ function base_url()
 
 // DEBUG
 $student = "Tester McTesterson";
-$currentdeck = 0;
-$decks = json_encode(
-    '[
-        {
-          "id": 0,
-          "name": "Jazz FlashCards Stack 1",
-          "scores": [0, 0, 0, 0, 0, 0]
-        },
-        {
-          "id": 1,
-          "name": "Blues FlashCards Stack 1",
-          "scores": [1, 2, 3, 4, 5, 1]
-        },
-        {
-          "id": 2,
-          "name": "Jazz FlashCards Stack 2",
-          "scores": [2, 3, 4, 5, 1, 2]
-        },
-        {
-          "id": 3,
-          "name": "Jazz FlashCards Stack 2",
-          "scores": [3, 4, 5, 1, 2, 3]
-        },
-        {
-          "id": 4,
-          "name": "Folk Music Stack 1",
-          "scores": [4, 5, 2, 3, 4, 5]
-        },
-        {
-          "id": 5,
-          "name": "Folk Music Stack 2",
-          "scores": [5, 1, 2, 3, 4, 5]
-        },
-        {
-          "id": 6,
-          "name": "Jazz FlashCards Stack 2",
-          "scores": [1, 1, 2, 3, 4, 5]
-        },
-        {
-          "id": 7,
-          "name": "Understanding Music Stack 1",
-          "scores": [1, 2, 2, 3, 4, 5]
-        },
-        {
-          "id": 8,
-          "name": "Jazz FlashCards Stack 3",
-          "scores": [1, 2, 3, 3, 4, 5]
-        },
-        {
-          "id": 9,
-          "name": "Understanding Music Stack 2",
-          "scores": [5, 5, 5, 5, 5, 5]
-        }
-    ]');
+$currentdeck = 70;
+$cards = json_encode('
+[{
+	"id": "67",
+	"flashcard_deck_id": "66",
+	"deck_title": "test",
+	"scores": "3"
+}, {
+	"id": "68",
+	"flashcard_deck_id": "66",
+	"deck_title": "test",
+	"scores": "4"
+}, {
+	"id": "69",
+	"flashcard_deck_id": "66",
+	"deck_title": "test",
+	"scores": "5"
+}, {
+	"id": "71",
+	"flashcard_deck_id": "70",
+	"deck_title": "this",
+	"scores": "0"
+}, {
+	"id": "73",
+	"flashcard_deck_id": "72",
+	"deck_title": "sowhat",
+	"scores": "0"
+}]
+    ');
 // /DEBUG
 
 ?>
@@ -70,7 +45,7 @@ $decks = json_encode(
 <head>
     <meta charset="utf-8">
     <link rel="manifest" href="manifest.json">
-    <title>AmPopMusic.com - <!-- TODO: PUT DECK TITLE HERE --></title>
+    <title></title>
     <style>
         <?php
             $intro_bg = "img/backgrounds/intro_background.png";
@@ -80,6 +55,10 @@ $decks = json_encode(
         @font-face {
             font-family: FlashcardsFont;
             src: url(<?php echo(base_url() . $flashcards_font); ?>);
+        }
+
+        body {
+            margin-right: 0;
         }
 
         .flashcards,
@@ -231,6 +210,48 @@ $decks = json_encode(
             background: -moz-linear-gradient(rgb(0, 0, 254), rgb(0, 0, 180)); /* For Firefox 3.6 to 15 */
             background: linear-gradient(rgb(0, 0, 254), rgb(0, 0, 180)); /* Standard syntax */
         }
+
+        .flashcard-stack-button:hover > .hover-anim,
+        .leave-stack-button:hover > .hover-anim {
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.3);
+        }
+
+        .leave-stack-button {
+            position: absolute;
+            top: 462px;
+            left: 343px;
+            width: 156px;
+            height: 26px;
+            background: transparent;
+        }
+
+        .leave-stack-button > .hover-anim {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border-top-left-radius: 9px;
+            border-bottom-left-radius: 8px;
+        }
+
+        .flashcard-stack-button {
+            position: absolute;
+            top: 462px;
+            left: 588px;
+            width: 155px;
+            height: 26px;
+            background: transparent;
+        }
+
+        .flashcard-stack-button > .hover-anim {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+            border-top-right-radius: 9px;
+            border-bottom-right-radius: 8px;
+        }
     </style>
 </head>
 <body>
@@ -238,7 +259,12 @@ $decks = json_encode(
     <div class="intro-container">
         <div class="intro-main">
             <span class="student-name"></span>
-            <div class="scores-container">
+            <div class="scores-container"></div>
+            <div class="leave-stack-button">
+                <div class="hover-anim"></div>
+            </div>
+            <div class="flashcard-stack-button">
+                <div class="hover-anim"></div>
             </div>
         </div>
     </div>
@@ -252,6 +278,15 @@ $decks = json_encode(
     $(document).ready(function () {
         // CLICK ACTIONS
 
+        $('.leave-stack-button').on('click', function () {
+            $('#mask_popup').hide();
+            $('#popup_info').remove();
+        });
+
+        $('.flashcard-stack-button').on('click', function () {
+            location.href = '<?php echo base_url()?>flashcards/show/' + currentDeckId;
+        });
+
         initializeScores();
     });
 
@@ -259,7 +294,7 @@ $decks = json_encode(
 
     var student = "",
         decks = [],
-        currentDeck = 0;
+        currentDeckId = 0;
 
     function initializeScores() {
         getDecks();
@@ -267,8 +302,20 @@ $decks = json_encode(
     }
 
     function getDecks() {
-        decks = JSON.parse(<?php echo($decks)?>);
-        currentDeck = <?php echo($currentdeck)?>;
+        var cards = JSON.parse(<?php echo($cards)?>);
+        for (var i in cards) {
+            if (!decks[cards[i]['flashcard_deck_id']]) {
+                decks[cards[i]['flashcard_deck_id']] = {
+                    id: cards[i]['flashcard_deck_id'],
+                    name: cards[i]['deck_title'],
+                    scores: []
+                };
+            }
+            decks[cards[i]['flashcard_deck_id']].scores.push(cards[i].scores);
+        }
+
+        // TODO: Replace debug $currentdeck with actual value for target deck id
+        currentDeckId = <?php echo($currentdeck)?>;
         loadScores();
         renderDecks();
     }
@@ -283,12 +330,12 @@ $decks = json_encode(
             decks[i].fives = 0;
 
             for (var j in decks[i].scores) {
-                if (decks[i].scores[j] === 0) decks[i].zeros++;
-                else if (decks[i].scores[j] === 1) decks[i].ones++;
-                else if (decks[i].scores[j] === 2) decks[i].twos++;
-                else if (decks[i].scores[j] === 3) decks[i].threes++;
-                else if (decks[i].scores[j] === 4) decks[i].fours++;
-                else if (decks[i].scores[j] === 5) decks[i].fives++;
+                if (decks[i].scores[j] == 0) decks[i].zeros++;
+                else if (decks[i].scores[j] == 1) decks[i].ones++;
+                else if (decks[i].scores[j] == 2) decks[i].twos++;
+                else if (decks[i].scores[j] == 3) decks[i].threes++;
+                else if (decks[i].scores[j] == 4) decks[i].fours++;
+                else if (decks[i].scores[j] == 5) decks[i].fives++;
             }
 
             decks[i].score = (((decks[i].fives * 4) + (decks[i].fours * 3) + (decks[i].threes * 2) + (decks[i].twos)) / (4 * decks[i].scores.length)) * 100;
@@ -296,13 +343,14 @@ $decks = json_encode(
     }
 
     function getStudent() {
+        // TODO: Replace debug $student with actual value for student name
         student = "<?php echo $student?>";
         $('.student-name').html(student);
     }
 
     function renderDecks() {
         for (var i in decks) {
-            if (decks[i].id == currentDeck) {
+            if (decks[i].id == currentDeckId) {
                 $('.scores-container').prepend(
                     '<div class="deck current-deck">' +
                     '<div class="deck-name">' + decks[i].name + '</div>' +
@@ -317,6 +365,7 @@ $decks = json_encode(
                     '</div>' +
                     '</div>'
                 );
+                $('title').html('AmPopMusic.com - ' + decks[i].name);
             } else {
                 $('.scores-container').append(
                     '<div class="deck">' +

@@ -137,7 +137,6 @@ $flashcardinfo = json_encode(
     }');
 
 $flashcardprof = "Dr. Professorson";
-$studentid = "3";
 // /DEBUG
 
 ?>
@@ -172,6 +171,10 @@ $studentid = "3";
             50% {
                 opacity: 1;
             }
+        }
+
+        body {
+            margin-right: 0;
         }
 
         .flashcards,
@@ -845,14 +848,9 @@ $studentid = "3";
         loadScores();
         setCounter(currentCardCount);
         getRetestStackCount();
-        if (!firstTime) {
-            $('.side-a-text').html("Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.");
-            $('.side-b-text').html("Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.");
-        } else {
-            currentCardCount = 0;
-            getFlashcards();
-            resetStack();
-        }
+        $('.side-a-text').html("Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.");
+        $('.side-b-text').html("Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.");
+
     }
 
     function loadCard(count) {
@@ -944,7 +942,6 @@ $studentid = "3";
         scores = [];
         for (var i in cards) {
             if (cards[i].score === undefined) cards[i].score = 0;
-            if (cards[i].score != 0) firstTime = false;
             scores.push([cards[i].id, cards[i].score]);
         }
     }
@@ -971,7 +968,7 @@ $studentid = "3";
         cardScore[1] = score;
         loadScores();
 
-        $.post('<?php echo base_url()?>updateScore/' + card.id + '/' + card.score + '/<?php echo $studentid?>');
+        $.post('<?php echo base_url()?>updateScore/' + card.id + '/' + card.score + '/<?php echo($this->session->userdata[id]) ?>');
     }
 
     function setCounter(count) {
