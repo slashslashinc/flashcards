@@ -137,6 +137,7 @@ $flashcardinfo = json_encode(
     }');
 
 $flashcardprof = "Dr. Professorson";
+$studentid = "3";
 // /DEBUG
 
 ?>
@@ -146,7 +147,7 @@ $flashcardprof = "Dr. Professorson";
 <head>
     <meta charset="utf-8">
     <link rel="manifest" href="manifest.json">
-    <title>AmPopMusic.com - <!-- TODO: PUT DECK TITLE HERE --></title>
+    <title></title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
     <style>
@@ -322,7 +323,7 @@ $flashcardprof = "Dr. Professorson";
         .card .side-content > .audio-buttons > .audio-button:hover,
         .card .side-content > .audio-buttons > .audio-button:focus {
             cursor: pointer;
-            background-color: rgba(255, 255, 255, 0.3)!important;
+            background-color: rgba(255, 255, 255, 0.3) !important;
         }
 
         .retest-stack-deck {
@@ -695,7 +696,8 @@ $flashcardprof = "Dr. Professorson";
                                 <button class="audio-button audio-pause" onclick="toggleAudio(false)">Pause</button>
                                 <button class="audio-button"
                                         onclick="document.getElementById('player').currentTime = 0">
-                                    Restart</button>
+                                    Restart
+                                </button>
                             </div>
                             <img src="" class="side-a-image">
                         </div>
@@ -889,6 +891,7 @@ $flashcardprof = "Dr. Professorson";
     }
 
     function loadDeck() {
+        $('title').html('AmPopMusic.com - ' + deck['deck_title']);
         $('.deck-name').html(deck['deck_title']);
         $('.professor').html(prof);
     }
@@ -942,7 +945,6 @@ $flashcardprof = "Dr. Professorson";
         for (var i in cards) {
             if (cards[i].score === undefined) cards[i].score = 0;
             if (cards[i].score != 0) firstTime = false;
-            console.log(firstTime);
             scores.push([cards[i].id, cards[i].score]);
         }
     }
@@ -969,10 +971,7 @@ $flashcardprof = "Dr. Professorson";
         cardScore[1] = score;
         loadScores();
 
-        // TODO: Add POST for score to keep track of student score for each card
-        // POST: card.score to card table
-        // TODO: Add POST for score to keep track of student score for the deck (currentScore)
-        // POST: currentScore to deck table
+        $.post('<?php echo base_url()?>updateScore/<?php echo $studentid?>/' + card.id + '/' + card.score);
     }
 
     function setCounter(count) {
