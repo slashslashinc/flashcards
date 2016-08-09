@@ -174,7 +174,7 @@ $flashcardprof = "Dr. Professorson";
         }
 
         body {
-            margin-right: 0;
+            margin: 15px 0 0 6px;
         }
 
         .flashcards,
@@ -207,10 +207,13 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .flashcards-counter {
-            position: absolute;
-            top: 130px;
-            left: 145px;
+            position: relative;
+            display: inline-block;
+            top: 108px;
+            left: 100px;
+            width: 90px;
             font-size: 22px;
+            text-align: center;
         }
 
         .flashcards-counter-text {
@@ -218,9 +221,9 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .card-container {
-            position: absolute;
-            top: 88px;
-            left: 276px;
+            position: relative;
+            top: -155px;
+            left: 253px;
             -webkit-perspective: 1000px;
             -moz-perspective: 1000px;
             -o-perspective: 1000px;
@@ -330,9 +333,9 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .retest-stack-deck {
-            position: absolute;
-            top: 197px;
-            left: 71px;
+            position: relative;
+            top: 146px;
+            left: 48px;
             width: 140px;
             height: 160px;
             background: transparent;
@@ -355,9 +358,9 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .entire-stack-deck {
-            position: absolute;
-            top: 197px;
-            left: 568px;
+            position: relative;
+            top: -439px;
+            left: 545px;
             width: 140px;
             height: 160px;
             background: transparent;
@@ -414,9 +417,9 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .retest-stack-button {
-            position: absolute;
-            top: 384px;
-            left: 79px;
+            position: relative;
+            top: 173px;
+            left: 56px;
             width: 125px;
             height: 33px;
             background: transparent;
@@ -440,9 +443,9 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .entire-stack-button {
-            position: absolute;
-            top: 384px;
-            left: 578px;
+            position: relative;
+            top: -412px;
+            left: 555px;
             width: 125px;
             height: 33px;
             background: transparent;
@@ -458,9 +461,9 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .flip-button {
-            position: absolute;
-            top: 359px;
-            left: 519px;
+            position: relative;
+            top: -470px;
+            left: 495px;
             width: 42px;
             height: 41px;
             background: transparent;
@@ -475,9 +478,9 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .finished-button {
-            position: absolute;
-            top: 463px;
-            left: 654px;
+            position: relative;
+            top: -435px;
+            left: 631px;
             width: 96px;
             height: 25px;
             background: transparent;
@@ -494,7 +497,7 @@ $flashcardprof = "Dr. Professorson";
 
         .score-buttons {
             position: relative;
-            top: 383px;
+            top: -419px;
             left: 213px;
             width: 312px;
             height: 28px;
@@ -592,15 +595,15 @@ $flashcardprof = "Dr. Professorson";
         }
 
         .score-text {
-            position: absolute;
-            top: 100px;
-            left: 650px;
+            position: relative;
+            top: -473px;
+            left: 625px;
             font-size: 14px;
         }
 
         .score-bar {
             position: relative;
-            top: 97px;
+            top: -471px;
             left: 512px;
             width: 213px;
             height: 45px;
@@ -781,6 +784,11 @@ $flashcardprof = "Dr. Professorson";
             resetStack();
         });
 
+        $('.finished-button').on('click', function () {
+            $('#mask_popup').hide();
+            $('#popup_info').remove();
+        });
+
         // GAME SETUP
 
         initializeGame();
@@ -850,6 +858,9 @@ $flashcardprof = "Dr. Professorson";
         getRetestStackCount();
         $('.side-a-text').html("Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.");
         $('.side-b-text').html("Choose Retest Stack to test cards with a score of 1-3, or Entire Stack to test every card.");
+        $('.side-a-audio').hide();
+        $('.audio-buttons').hide();
+        $('.side-a-image').hide();
 
     }
 
@@ -885,6 +896,9 @@ $flashcardprof = "Dr. Professorson";
             $sideA.html("Deck Complete!");
             $sideB.html("Deck Complete!");
             $('.score-buttons .button').addClass("disabled");
+            $audio.hide();
+            $audioButtons.hide();
+            $image.hide();
         }
     }
 
@@ -902,14 +916,14 @@ $flashcardprof = "Dr. Professorson";
             fours = 0,
             fives = 0;
 
-        for (var i in scores) {
-            if (scores[i][1] === 0) zeros++;
-            else if (scores[i][1] === 1) ones++;
-            else if (scores[i][1] === 2) twos++;
-            else if (scores[i][1] === 3) threes++;
-            else if (scores[i][1] === 4) fours++;
-            else if (scores[i][1] === 5) fives++;
-        }
+        scores.forEach(function (score) {
+            if (score[1] == 0) zeros++;
+            else if (score[1] == 1) ones++;
+            else if (score[1] == 2) twos++;
+            else if (score[1] == 3) threes++;
+            else if (score[1] == 4) fours++;
+            else if (score[1] == 5) fives++;
+        });
 
         renderScore('.zeros', zeros);
         renderScore('.ones', ones);
@@ -940,35 +954,51 @@ $flashcardprof = "Dr. Professorson";
 
     function getScores() {
         scores = [];
-        for (var i in cards) {
-            if (cards[i].score === undefined) cards[i].score = 0;
-            scores.push([cards[i].id, cards[i].score]);
-        }
+
+        cards.forEach(function (card) {
+            if (card.score === undefined) card.score = 0;
+            scores.push([card.id, card.score]);
+        });
     }
 
     function getRetestStack() {
         var testCards = [];
-        for (var i in cards) if (cards[i].score < 4 && cards[i].score > 0) testCards.push(cards[i]);
+
+        cards.forEach(function (card) {
+            if (card.score < 4) testCards.push(card);
+        });
+
         cards = testCards;
+
         getRetestStackCount();
     }
 
     function getRetestStackCount() {
         var count = 0;
-        for (var i in cards) if (cards[i].score < 4 && cards[i].score > 0) count++;
+
+        cards.forEach(function (card) {
+            if (card.score < 4) count++;
+        });
+
         $('.retest-stack-count').html(count);
     }
 
     function setScore(id, score) {
-        var card = {},
+        var cardToScore = {},
             cardScore = [];
-        for (var i in cards) if (cards[i].id == id) card = cards[i];
-        for (var j in scores) if (scores[j][0] == id) cardScore = scores[j];
-        card.score = score;
-        cardScore[1] = score;
-        loadScores();
 
-        $.post('<?php echo base_url()?>updateScore/' + card.id + '/' + card.score + '/<?php echo($this->session->userdata[id]) ?>');
+        cards.forEach(function(card){
+            if (card.id == id) cardToScore = card;
+        });
+
+        scores.forEach(function(score){
+            if (score[0] == id) cardScore = score;
+        });
+
+        cardToScore.score = score;
+        cardScore[1] = score;
+
+        loadScores();
     }
 
     function setCounter(count) {

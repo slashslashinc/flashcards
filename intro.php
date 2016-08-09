@@ -58,7 +58,7 @@ $cards = json_encode('
         }
 
         body {
-            margin-right: 0;
+            margin: 15px 0 0 6px;
         }
 
         .flashcards,
@@ -91,20 +91,20 @@ $cards = json_encode('
         }
 
         .student-name {
-            position: absolute;
-            top: 109px;
-            left: 384px;
+            position: relative;
+            top: 80px;
+            left: 365px;
             font-family: arial, sans-serif;
             font-size: 11px;
             font-weight: 600;
         }
 
         .scores-container {
-            position: absolute;
-            top: 125px;
-            left: 340px;
+            position: relative;
+            top: 75px;
+            left: 317px;
             width: 400px;
-            height: 275px;
+            height: 280px;
             overflow-y: scroll;
         }
 
@@ -218,9 +218,9 @@ $cards = json_encode('
         }
 
         .leave-stack-button {
-            position: absolute;
-            top: 462px;
-            left: 343px;
+            position: relative;
+            top: 139px;
+            left: 320px;
             width: 156px;
             height: 26px;
             background: transparent;
@@ -236,9 +236,9 @@ $cards = json_encode('
         }
 
         .flashcard-stack-button {
-            position: absolute;
-            top: 462px;
-            left: 588px;
+            position: relative;
+            top: 113px;
+            left: 565px;
             width: 155px;
             height: 26px;
             background: transparent;
@@ -303,16 +303,16 @@ $cards = json_encode('
 
     function getDecks() {
         var cards = JSON.parse(<?php echo($cards)?>);
-        for (var i in cards) {
-            if (!decks[cards[i]['flashcard_deck_id']]) {
-                decks[cards[i]['flashcard_deck_id']] = {
-                    id: cards[i]['flashcard_deck_id'],
-                    name: cards[i]['deck_title'],
+        cards.forEach(function(card){
+            if (!decks[card['flashcard_deck_id']]){
+                decks[card['flashcard_deck_id']] = {
+                    id: card['flashcard_deck_id'],
+                    name: card['deck_title'],
                     scores: []
                 };
             }
-            decks[cards[i]['flashcard_deck_id']].scores.push(cards[i].scores);
-        }
+            decks[card['flashcard_deck_id']].scores.push(card.scores);
+        });
 
         // TODO: Replace debug $currentdeck with actual value for target deck id
         currentDeckId = <?php echo($currentdeck)?>;
