@@ -785,8 +785,8 @@ $flashcardprof = "Dr. Professorson";
         });
 
         $('.finished-button').on('click', function () {
-            $('#mask_popup').hide();
-            $('#popup_info').remove();
+            window.parent.$('#mask_popup').hide();
+            window.parent.$('#popup_info').remove();
         });
 
         // GAME SETUP
@@ -998,7 +998,6 @@ $flashcardprof = "Dr. Professorson";
 
         card.score = score;
 
-        $.post('<?php echo base_url()?>updateScore/' + card.id + '/' + card.score + '/<?php echo($this->session->userdata[id]) ?>');
 
         loadScores();
     }
