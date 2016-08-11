@@ -281,6 +281,8 @@ $cards = json_encode('
         $('.leave-stack-button').on('click', function () {
             window.parent.$('#mask_popup').hide();
             window.parent.$('#popup_info').remove();
+            $('#mask_popup', parent.document).hide();
+            $('#popup_info', parent.document).remove();
         });
 
         $('.flashcard-stack-button').on('click', function () {
