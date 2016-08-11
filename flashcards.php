@@ -19,8 +19,8 @@ $flashcardset = json_encode(
             "date_created":null,
             "date_last_modified":null,
             "status":"active",
-            "audio_url": "",
-            "image_url": ""
+            "attachment_url": "",
+            "attachment_type": "0"
         },
         {
             "id":"3",
@@ -33,8 +33,8 @@ $flashcardset = json_encode(
             "date_created":null,
             "date_last_modified":null,
             "status":"active",
-            "audio_url": "",
-            "image_url": ""
+            "attachment_url": "",
+            "attachment_type": "0"
         },
         {
             "id":"1",
@@ -47,8 +47,8 @@ $flashcardset = json_encode(
             "date_created":null,
             "date_last_modified":null,
             "status":"active",
-            "audio_url": "",
-            "image_url": "img/card_images/louis_armstrong.jpg"
+            "attachment_url": "louis_armstrong.jpg",
+            "attachment_type": "1"
         },
         {
             "id":"2",
@@ -61,8 +61,8 @@ $flashcardset = json_encode(
             "date_created":null,
             "date_last_modified":null,
             "status":"active",
-            "audio_url": "audio/card_audio/Louis Armstrong - When The Saints Go Marching In.mp3",
-            "image_url": ""
+            "attachment_url": "Louis Armstrong - When The Saints Go Marching In.mp3",
+            "attachment_type": "2"
         },
         {
             "id":"5",
@@ -75,8 +75,8 @@ $flashcardset = json_encode(
             "date_created":null,
             "date_last_modified":null,
             "status":"active",
-            "audio_url": "",
-            "image_url": ""
+            "attachment_url": "",
+            "attachment_type": "0"
         },
         {
             "id":"6",
@@ -89,8 +89,8 @@ $flashcardset = json_encode(
             "date_created":null,
             "date_last_modified":null,
             "status":"active",
-            "audio_url": "",
-            "image_url": ""
+            "attachment_url": "",
+            "attachment_type": "0"
         },
         {
             "id":"7",
@@ -103,8 +103,8 @@ $flashcardset = json_encode(
             "date_created":null,
             "date_last_modified":null,
             "status":"active",
-            "audio_url": "",
-            "image_url": ""
+            "attachment_url": "",
+            "attachment_type": "0"
         },
         {
             "id":"8",
@@ -117,8 +117,8 @@ $flashcardset = json_encode(
             "date_created":null,
             "date_last_modified":null,
             "status":"active",
-            "audio_url": "",
-            "image_url": ""
+            "attachment_url": "",
+            "attachment_type": "0"
         }
     ]');
 
@@ -879,19 +879,21 @@ $flashcardprof = "Dr. Professorson";
             $sideA.html(card['prompt_side']);
             $sideB.html(card['answer_side']);
 
-            if (card["audio_url"] != "" && card["audio_url"] != undefined) {
-                $audio.attr("src", encodeURI("<?php echo base_url() ?>" + card["audio_url"])).show();
-                $audioButtons.show();
-                toggleAudio(true);
-            } else {
-                $audio.hide();
-                $audioButtons.hide();
-                toggleAudio(false);
-            }
+            if (card['attachment_type'] > 0) {
+                card['attachment_type'] == 1
+                    ? $image.attr("src", encodeURI("<?php echo base_url() ?>flashcards/attachments/" + card['attachment_url'])).show()
+                    : $image.hide();
 
-            card["image_url"] != "" && card["image_url"] != undefined
-                ? $image.attr("src", encodeURI("<?php echo base_url() ?>" + card["image_url"])).show()
-                : $image.hide();
+                if (card['attachment_type'] == 2) {
+                    $audio.attr("src", encodeURI("<?php echo base_url() ?>flashcards/attachments/" + card["attachment_url"])).show();
+                    $audioButtons.show();
+                    toggleAudio(true);
+                } else {
+                    $audio.hide();
+                    $audioButtons.hide();
+                    toggleAudio(false);
+                }
+            }
         } else {
             $sideA.html("Deck Complete!");
             $sideB.html("Deck Complete!");
@@ -984,19 +986,17 @@ $flashcardprof = "Dr. Professorson";
     }
 
     function setScore(id, score) {
-        var cardToScore = {},
-            cardScore = [];
+        var card = {};
 
-        cards.forEach(function(card){
-            if (card.id == id) cardToScore = card;
+        cards.forEach(function (c) {
+            if (c.id == id) card = c;
         });
 
-        scores.forEach(function(score){
-            if (score[0] == id) cardScore = score;
+        scores.forEach(function (s) {
+            if (s[0] == id) s[1] = score;
         });
 
-        cardToScore.score = score;
-        cardScore[1] = score;
+        card.score = score;
 
         $.post('<?php echo base_url()?>updateScore/' + card.id + '/' + card.score + '/<?php echo($this->session->userdata[id]) ?>');
 
