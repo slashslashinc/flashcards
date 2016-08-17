@@ -9,35 +9,7 @@ function base_url()
 $flashcardset = json_encode(
     '[
         {
-            "id":"4",
-            "prompt_side":"What country are we in?",
-            "answer_side":"USA",
-            "professor_id":"2",
-            "is_deck":"0",
-            "flashcard_deck_id":"2",
-            "deck_title":"",
-            "date_created":null,
-            "date_last_modified":null,
-            "status":"active",
-            "attachment_url": "",
-            "attachment_type": "0"
-        },
-        {
-            "id":"3",
-            "prompt_side":"What year is it?",
-            "answer_side":"2016",
-            "professor_id":"2",
-            "is_deck":"0",
-            "flashcard_deck_id":"2",
-            "deck_title":"",
-            "date_created":null,
-            "date_last_modified":null,
-            "status":"active",
-            "attachment_url": "",
-            "attachment_type": "0"
-        },
-        {
-            "id":"1",
+            "id":"0",
             "prompt_side":"Who is this artist?",
             "answer_side":"Louis Armstrong",
             "professor_id":"2",
@@ -51,7 +23,7 @@ $flashcardset = json_encode(
             "attachment_type": "1"
         },
         {
-            "id":"2",
+            "id":"1",
             "prompt_side":"What is the name of this song?",
             "answer_side":"When the Saints Go Marching In",
             "professor_id":"2",
@@ -65,7 +37,35 @@ $flashcardset = json_encode(
             "attachment_type": "2"
         },
         {
-            "id":"5",
+            "id":"2",
+            "prompt_side":"What year is it?",
+            "answer_side":"2016",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active",
+            "attachment_url": "",
+            "attachment_type": "0"
+        },
+        {
+            "id":"3",
+            "prompt_side":"What country are we in?",
+            "answer_side":"USA",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active",
+            "attachment_url": "",
+            "attachment_type": "0"
+        },
+        {
+            "id":"4",
             "prompt_side":"Is this a good question?",
             "answer_side":"No it is not",
             "professor_id":"2",
@@ -79,7 +79,7 @@ $flashcardset = json_encode(
             "attachment_type": "0"
         },
         {
-            "id":"6",
+            "id":"5",
             "prompt_side":"Hello?",
             "answer_side":"Is it me you are looking for?",
             "professor_id":"2",
@@ -93,7 +93,7 @@ $flashcardset = json_encode(
             "attachment_type": "0"
         },
         {
-            "id":"7",
+            "id":"6",
             "prompt_side":"What is 1 + 1?",
             "answer_side":"1 + 1 = 2",
             "professor_id":"2",
@@ -107,9 +107,37 @@ $flashcardset = json_encode(
             "attachment_type": "0"
         },
         {
-            "id":"8",
+            "id":"7",
             "prompt_side":"Is this the last question?",
             "answer_side":"Hopefully",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active",
+            "attachment_url": "",
+            "attachment_type": "0"
+        },
+        {
+            "id":"8",
+            "prompt_side":"What is the name of this TOTALLY DIFFERENT song?",
+            "answer_side":"When the Saints Go Marching In",
+            "professor_id":"2",
+            "is_deck":"0",
+            "flashcard_deck_id":"2",
+            "deck_title":"",
+            "date_created":null,
+            "date_last_modified":null,
+            "status":"active",
+            "attachment_url": "Louis Armstrong - When The Saints Go Marching In.mp3",
+            "attachment_type": "2"
+        },
+        {
+            "id":"9",
+            "prompt_side":"Is this question really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really really long?",
+            "answer_side":"Yes",
             "professor_id":"2",
             "is_deck":"0",
             "flashcard_deck_id":"2",
@@ -130,13 +158,13 @@ $flashcardinfo = json_encode(
         "professor_id":"2",
         "is_deck":"1",
         "flashcard_deck_id":null,
-        "deck_title":"General Questions",
+        "deck_title":"Understanding Jazz Music 101: Learning Fundamentals",
         "date_created":null,
         "date_last_modified":null,
         "status":"active"
     }');
 
-$flashcardprof = "Dr. Professorson";
+$flashcardprof = "Dr. Artemis j. Superlonglastname";
 // /DEBUG
 
 ?>
@@ -149,9 +177,10 @@ $flashcardprof = "Dr. Professorson";
     <title></title>
     <script src="https://code.jquery.com/jquery-2.2.4.min.js"
             integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="js/jquery.slimscroll.min.js"></script>
     <style>
         <?php
-            $flashcards_bg = "img/backgrounds/main_background.png";
+            $flashcards_bg = "img/backgrounds/main_background-01.png";
             $flashcards_font = "fonts/ebrimabd.ttf";
             $card_bg = "img/entities/card.png";
         ?>
@@ -185,7 +214,7 @@ $flashcardprof = "Dr. Professorson";
 
         .flashcards {
             margin: 0;
-            overflow: scroll;
+            overflow: hidden;
         }
 
         .flashcards-container {
@@ -300,9 +329,7 @@ $flashcardprof = "Dr. Professorson";
 
         .card .side-content,
         .card .side-content {
-            overflow-y: scroll;
             display: block;
-            max-height: 200px;
         }
 
         .card .side-content > img {
@@ -343,12 +370,12 @@ $flashcardprof = "Dr. Professorson";
 
         .retest-stack-deck > .highlight-anim {
             position: relative;
-            width: 99px;
-            height: 100px;
-            top: 23px;
-            left: 21px;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
             background: transparent;
-            border-radius: 50%;
+            border-radius: 3px;
             opacity: 0;
         }
 
@@ -368,12 +395,12 @@ $flashcardprof = "Dr. Professorson";
 
         .entire-stack-deck > .highlight-anim {
             position: relative;
-            width: 99px;
-            height: 109px;
-            top: 25px;
-            left: 21px;
+            width: 100%;
+            height: 100%;
+            top: 0;
+            left: 0;
             background: transparent;
-            border-radius: 50%;
+            border-radius: 3px;
             opacity: 0;
         }
 
@@ -384,18 +411,18 @@ $flashcardprof = "Dr. Professorson";
 
         .entire-stack-deck > .deck-name {
             position: absolute;
-            top: 35px;
-            left: 25px;
-            width: 90px;
+            top: 15px;
+            left: 10px;
+            width: 120px;
             text-align: center;
             text-shadow: 1px 1px 3px #575757;
         }
 
         .entire-stack-deck > .professor {
             position: absolute;
-            top: 75px;
-            left: 25px;
-            width: 90px;
+            bottom: 15px;
+            left: 5px;
+            width: 130px;
             font-size: 12px;
             text-align: center;
             text-shadow: 1px 1px 3px #575757;
@@ -695,7 +722,6 @@ $flashcardprof = "Dr. Professorson";
                     <div class="side-a">
                         <div class="side-content">
                             <span class="side-a-text"></span>
-                            <audio src="" class="side-a-audio" id="player"></audio>
                             <div class="audio-buttons">
 
                                 <button class="audio-button audio-play" onclick="toggleAudio(true)">Play</button>
@@ -785,15 +811,18 @@ $flashcardprof = "Dr. Professorson";
         });
 
         $('.finished-button').on('click', function () {
-            window.parent.$('#mask_popup').hide();
-            window.parent.$('#popup_info').remove();
-            $('#mask_popup', parent.document).hide();
-            $('#popup_info', parent.document).remove();
+            // TODO: add link to update page
+            location.href = '<?php echo base_url()?>intro.php';
         });
 
         // GAME SETUP
 
         initializeGame();
+        $('.side-a .side-content').slimScroll({
+            color: '#fff',
+            height: '200px',
+            alwaysVisible: true
+        });
     });
 
     // --- ANIMATION HANDLERS
@@ -848,7 +877,7 @@ $flashcardprof = "Dr. Professorson";
         currentCardCount = 0,
         currentScore = 0,
         totalCards = 0,
-        firstTime = true;
+        player = '<audio src="" class="side-a-audio" id="player"></audio>';
 
     function initializeGame() {
         getFlashcards();
@@ -867,10 +896,9 @@ $flashcardprof = "Dr. Professorson";
     }
 
     function loadCard(count) {
-        var $sideA = $('.side-a-text'),
-            $sideB = $('.side-b-text'),
-            $audio = $('.side-a-audio'),
-            $audioButtons = $('.audio-buttons'),
+        var $aContent = $('.side-a .side-content'),
+            $aText = $('.side-a-text'),
+            $bText = $('.side-b-text'),
             $image = $('.side-a-image');
 
         if (currentCardCount < cards.length) {
@@ -878,8 +906,8 @@ $flashcardprof = "Dr. Professorson";
 
             currentCardId = cards[count].id;
 
-            $sideA.html(card['prompt_side']);
-            $sideB.html(card['answer_side']);
+            $aText.html(card['prompt_side']);
+            $bText.html(card['answer_side']);
 
             if (card['attachment_type'] > 0) {
                 card['attachment_type'] == 1
@@ -887,22 +915,34 @@ $flashcardprof = "Dr. Professorson";
                     : $image.hide();
 
                 if (card['attachment_type'] == 2) {
-                    $audio.attr("src", encodeURI("<?php echo base_url() ?>flashcards/attachments/" + card["attachment_url"])).show();
-                    $audioButtons.show();
+                    $aContent.append(player);
+                    $('.side-a-audio').attr("src", encodeURI("<?php echo base_url() ?>flashcards/attachments/" + card["attachment_url"])).show();
+                    $('.audio-buttons').show();
                     toggleAudio(true);
                 } else {
-                    $audio.hide();
-                    $audioButtons.hide();
-                    toggleAudio(false);
+                    $('.side-a-audio').hide();
+                    $('.audio-buttons').hide();
+                    stopPlayer();
                 }
+            } else {
+                $image.hide();
+                $('.side-a-audio').hide();
+                $('.audio-buttons').hide();
+                stopPlayer();
             }
         } else {
-            $sideA.html("Deck Complete!");
-            $sideB.html("Deck Complete!");
+            $aText.html("Deck Complete!");
+            $bText.html("Deck Complete!");
             $('.score-buttons .button').addClass("disabled");
-            $audio.hide();
-            $audioButtons.hide();
+            $('.side-a-audio').hide();
+            $('.audio-buttons').hide();
             $image.hide();
+            stopPlayer();
+        }
+
+        function stopPlayer() {
+            var $player = $('#player');
+            if ($player) $player.remove();
         }
     }
 
@@ -937,7 +977,7 @@ $flashcardprof = "Dr. Professorson";
         renderScore('.fives', fives);
 
         currentScore = (((fives * 4) + (fours * 3) + (threes * 2) + (twos)) / (4 * totalCards)) * 100;
-        $('.score-text').html(currentScore + "%");
+        $('.score-text').html(currentScore.toString().substring(0, 5) + "%");
     }
 
     function renderScore(selector, score) {
@@ -947,7 +987,7 @@ $flashcardprof = "Dr. Professorson";
     }
 
     function getFlashcards() {
-        cards = JSON.parse(<?php echo($flashcardset)?>);
+        cards = shuffleCards(JSON.parse(<?php echo($flashcardset)?>));
         deck = JSON.parse(<?php echo($flashcardinfo)?>);
         totalCards = cards.length;
     }
@@ -968,7 +1008,7 @@ $flashcardprof = "Dr. Professorson";
     function getRetestStack() {
         var testCards = [];
 
-        cards.forEach(function (card) {
+        shuffleCards(cards).forEach(function (card) {
             if (card.score < 4) testCards.push(card);
         });
 
@@ -995,11 +1035,15 @@ $flashcardprof = "Dr. Professorson";
         });
 
         scores.forEach(function (s) {
-            if (s[0] == id) s[1] = score;
+            if (s[0] == card.id) {
+                s[1] = score;
+            }
         });
 
         card.score = score;
 
+        // TODO: make sure this post call is correct
+        // $.post('<?php // echo base_url()?>updateScore/' + card.id + '/' + card.score + '/<?php // echo($this->session->userdata[id]) ?>');
 
         loadScores();
     }
@@ -1020,6 +1064,25 @@ $flashcardprof = "Dr. Professorson";
             $('.audio-play').show();
             $('.audio-pause').hide();
         }
+    }
+
+    function shuffleCards(cardArray) {
+        var newArray = [],
+            indexArray = [];
+
+        while (indexArray.length < cardArray.length) {
+            var index = Math.floor(Math.random() * cardArray.length),
+                inArray = false;
+
+            for (var i = 0; i < indexArray.length; i++) if (indexArray[i] == index) inArray = true;
+
+            if (!inArray) {
+                newArray.push(cardArray[index]);
+                indexArray[indexArray.length] = index;
+            }
+        }
+
+        return newArray;
     }
 
 </script>

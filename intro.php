@@ -34,6 +34,41 @@ $cards = json_encode('
 	"flashcard_deck_id": "72",
 	"deck_title": "sowhat",
 	"scores": "0"
+}, {
+	"id": "74",
+	"flashcard_deck_id": "67",
+	"deck_title": "test2",
+	"scores": "3"
+}, {
+	"id": "75",
+	"flashcard_deck_id": "67",
+	"deck_title": "test2",
+	"scores": "4"
+}, {
+	"id": "76",
+	"flashcard_deck_id": "67",
+	"deck_title": "test2",
+	"scores": "5"
+}, {
+	"id": "77",
+	"flashcard_deck_id": "71",
+	"deck_title": "this2",
+	"scores": "0"
+}, {
+	"id": "78",
+	"flashcard_deck_id": "73",
+	"deck_title": "sowhat2",
+	"scores": "0"
+}, {
+	"id": "79",
+	"flashcard_deck_id": "74",
+	"deck_title": "this3",
+	"scores": "0"
+}, {
+	"id": "80",
+	"flashcard_deck_id": "75",
+	"deck_title": "sowhat3",
+	"scores": "0"
 }]
     ');
 // /DEBUG
@@ -46,6 +81,9 @@ $cards = json_encode('
     <meta charset="utf-8">
     <link rel="manifest" href="manifest.json">
     <title></title>
+    <script src="https://code.jquery.com/jquery-2.2.4.min.js"
+            integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
+    <script src="js/jquery.slimscroll.min.js"></script>
     <style>
         <?php
             $intro_bg = "img/backgrounds/intro_background.png";
@@ -69,7 +107,7 @@ $cards = json_encode('
 
         .flashcards {
             margin: 0;
-            overflow: scroll;
+            overflow: hidden;
         }
 
         .intro-container {
@@ -105,7 +143,6 @@ $cards = json_encode('
             left: 317px;
             width: 400px;
             height: 280px;
-            overflow-y: scroll;
         }
 
         .deck {
@@ -259,7 +296,9 @@ $cards = json_encode('
     <div class="intro-container">
         <div class="intro-main">
             <span class="student-name"></span>
-            <div class="scores-container"></div>
+            <div class="scores-container">
+                <div class="scores"></div>
+            </div>
             <div class="leave-stack-button">
                 <div class="hover-anim"></div>
             </div>
@@ -270,8 +309,6 @@ $cards = json_encode('
     </div>
 </div>
 </body>
-<script src="https://code.jquery.com/jquery-2.2.4.min.js"
-        integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44=" crossorigin="anonymous"></script>
 <script>
     // --- SETUP
 
@@ -289,7 +326,14 @@ $cards = json_encode('
             location.href = '<?php echo base_url()?>flashcards/show/' + currentDeckId;
         });
 
+        // INITALIZE PAGE
+
         initializeScores();
+
+        $('.scores').slimScroll({
+            color: '#fff',
+            height: '280px'
+        });
     });
 
     // --- FLASHCARD LOGIC
@@ -353,7 +397,7 @@ $cards = json_encode('
     function renderDecks() {
         for (var i in decks) {
             if (decks[i].id == currentDeckId) {
-                $('.scores-container').prepend(
+                $('.scores').prepend(
                     '<div class="deck current-deck">' +
                     '<div class="deck-name">' + decks[i].name + '</div>' +
                     '<span class="score-text">Score: ' + decks[i].score + '</span>' +
@@ -369,7 +413,7 @@ $cards = json_encode('
                 );
                 $('title').html('AmPopMusic.com - ' + decks[i].name);
             } else {
-                $('.scores-container').append(
+                $('.scores').append(
                     '<div class="deck">' +
                     '<div class="deck-name">' + decks[i].name + '</div>' +
                     '<span class="score-text">Score: ' + decks[i].score.toString().substring(0, 5) + '%</span>' +
